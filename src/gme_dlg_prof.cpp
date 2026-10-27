@@ -33,7 +33,7 @@ BOOL CALLBACK GME_DlgProfNew(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
     SendMessage(hwndDlg, WM_SETICON, ICON_BIG, (LPARAM)g_hicnMain);
     g_hwndProfNew = hwndDlg;
     // set defaut entries
-    SetDlgItemTextW(hwndDlg, ENT_NAME, L"New Profile");
+    SetDlgItemTextW(hwndDlg, ENT_NAME, L"Новый профиль");
     // disable Add button
     EnableWindow(GetDlgItem(hwndDlg, BTN_ADD), false);
     return true;

@@ -147,13 +147,13 @@ BOOL CALLBACK GME_DlgModsMake(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
     // disable Add button
     EnableWindow(GetDlgItem(hwndDlg, BTN_CREATE), false);
     // add compression levels
-    SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 0, (LPARAM)"Best Compression");
+    SendMessageW(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 0, (LPARAM)L"Максимальное сжатие");
     SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_SETITEMDATA, 0, (LPARAM)MZ_BEST_COMPRESSION);
-    SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 1, (LPARAM)"Default Level");
+    SendMessageW(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 1, (LPARAM)L"Обычное сжатие");
     SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_SETITEMDATA, 1, (LPARAM)MZ_DEFAULT_LEVEL);
-    SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 2, (LPARAM)"Best Speed");
+    SendMessageW(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 2, (LPARAM)L"Максимальная скорость");
     SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_SETITEMDATA, 2, (LPARAM)MZ_BEST_SPEED);
-    SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 3, (LPARAM)"No Compression");
+    SendMessageW(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 3, (LPARAM)L"Без сжатия");
     SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_SETITEMDATA, 3, (LPARAM)MZ_NO_COMPRESSION);
     SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_SETCURSEL, 1, 0);
     GME_DlgModsMakeResize();
@@ -297,13 +297,13 @@ BOOL CALLBACK GME_DlgModsQuickMake(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARA
     // disable Add button
     EnableWindow(GetDlgItem(hwndDlg, BTN_CREATE), true);
     // add compression levels
-    SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 0, (LPARAM)"Best Compression");
+    SendMessageW(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 0, (LPARAM)L"Максимальное сжатие");
     SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_SETITEMDATA, 0, (LPARAM)MZ_BEST_COMPRESSION);
-    SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 1, (LPARAM)"Default Level");
+    SendMessageW(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 1, (LPARAM)L"Обычное сжатие");
     SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_SETITEMDATA, 1, (LPARAM)MZ_DEFAULT_LEVEL);
-    SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 2, (LPARAM)"Best Speed");
+    SendMessageW(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 2, (LPARAM)L"Максимальная скорость");
     SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_SETITEMDATA, 2, (LPARAM)MZ_BEST_SPEED);
-    SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 3, (LPARAM)"No Compression");
+    SendMessageW(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_ADDSTRING, 3, (LPARAM)L"Без сжатия");
     SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_SETITEMDATA, 3, (LPARAM)MZ_NO_COMPRESSION);
     SendMessage(GetDlgItem(g_hwndNewAMod, CB_ZIPLEVEL), CB_SETCURSEL, 1, 0);
     return true;

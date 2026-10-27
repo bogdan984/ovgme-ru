@@ -1,0 +1,60 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+  <title>Мод-папка</title>
+
+  <meta name="keywords"  content="моды,структура,мод-папка," ></head>
+
+  <body style="font-family:arial; font-size:10pt;">
+    <table bgcolor="#000" border="0" width="100%">
+      <tbody>
+        <tr>
+          <td style="color:#fff; font-size:14pt;">
+            <b>Мод-папка</b>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+Мод-папка — это папка с деревом файлов и вложенных папок, повторяющим иерархию файлов и
+папок корневой папки. Эта папка должна лежать в папке с модами: OvGME считает её
+папкой-контейнером мода.<br>
+<br>
+Разумеется, мод-папка не обязана содержать всё дерево файлов и папок целевой корневой
+папки. Нужно добавить только те папки, которые необходимы, чтобы пути изменённых файлов
+совпадали с путями существующих. Мод может также содержать файлы и папки, которых ещё
+нет в корневой папке, — они будут добавлены как новые (и удалены при отключении мода).<br>
+<br>
+Например, если дерево файлов корневой папки такое:<br>
+<br>
+<blockquote>
+<span style="font-family:Courier;">
+&#x1f4c1; MyGame<br>
+&emsp;&emsp; &#x1f4c1; Textures<br>
+&emsp;&emsp;&emsp;&emsp; &#x1f4c1; Landscape<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &#x1f4c4; picture1.dds<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &#x1f4c4; picture2.dds<br>
+&emsp;&emsp;&emsp;&emsp; &#x1f4c1; Vehicles<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &#x1f4c4; picture1.dds<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &#x1f4c4; picture2.dds<br>
+</span>
+</blockquote>
+и мод заменяет несколько текстур .dds в «<i>MyGame\Textures\Vehicles</i>», то мод-папка
+должна быть устроена так:
+<blockquote>
+<span style="font-family:Courier;">
+&#x1f4c1; My Texture Mod<br>
+&emsp;&emsp; &#x1f4c1; Textures<br>
+&emsp;&emsp;&emsp;&emsp; &#x1f4c1; Vehicles<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &#x1f4c4; picture1.dds<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &#x1f4c4; picture2.dds<br>
+</span>
+</blockquote>
+Затем папку-контейнер «My Texture Mod» нужно скопировать в папку с модами этой
+конфигурации, чтобы она распознавалась как корректная мод-папка.<br>
+<br>
+<i>Примечание: в корне мод-папки не должно быть файлов, которые не предназначены для
+копирования в корневую папку (например, readme.txt или других дополнительных файлов):
+OvGME сочтёт их частью мода и скопирует в корневую папку.</i>
+  </body>
+</html>

@@ -64,7 +64,7 @@ bool GME_ConfLoadCfg()
   if(!GME_IsDir(home_path)) {
     /* create home folder */
     if(!GME_DirCreate(home_path)) {
-      GME_DialogError(NULL, L"Fatal error: Unable to create home directory. OvGME can't create its global configuration.");
+      GME_DialogError(NULL, L"Критическая ошибка: не удалось создать домашнюю папку. OvGME не может создать глобальную конфигурацию.");
       GME_Logs(GME_LOG_ERROR, "GME_ConfLoadCfg", "Create OvGME home directory", "Failed");
       return false;
     }
@@ -87,7 +87,7 @@ bool GME_ConfLoadCfg()
     g_ConfCfg.ensort = false;
 
     if(!GME_ConfWritCfg(&g_ConfCfg)) {
-      GME_DialogError(NULL, L"Unable to write main configuration file. OvGME can't save its global configuration.");
+      GME_DialogError(NULL, L"Не удалось записать основной файл конфигурации. OvGME не может сохранить глобальную конфигурацию.");
       GME_Logs(GME_LOG_ERROR, "GME_ConfLoadCfg", "Write default configuration", "Failed");
       return false;
     }
@@ -121,7 +121,7 @@ bool GME_ConfLoadCfg()
     g_ConfCfg.ensort = false;
 
     if(!GME_ConfWritCfg(&g_ConfCfg)) {
-      GME_DialogError(NULL, L"Unable to write main configuration file. OvGME can't save its global configuration.");
+      GME_DialogError(NULL, L"Не удалось записать основной файл конфигурации. OvGME не может сохранить глобальную конфигурацию.");
       GME_Logs(GME_LOG_ERROR, "GME_ConfLoadCfg", "Write default configuration", "Failed");
       return false;
     }
@@ -147,7 +147,7 @@ bool GME_ConfSaveCfg()
   g_ConfCfg.ensort = SendMessage(GetDlgItem(g_hwndMain, CHK_SORTMODS), BM_GETCHECK, 0, 0);
 
   if(!GME_ConfWritCfg(&g_ConfCfg)) {
-    GME_DialogError(NULL, L"Unable to write main configuration file. OvGME can't save its global configuration.");
+    GME_DialogError(NULL, L"Не удалось записать основной файл конфигурации. OvGME не может сохранить глобальную конфигурацию.");
     return false;
   }
 

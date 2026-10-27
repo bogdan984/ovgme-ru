@@ -56,7 +56,7 @@ BOOL CALLBACK GME_DlgSnapNew(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
     ShowWindow(GetDlgItem(hwndDlg, PBM_SNAP_NEW), false);
     ShowWindow(GetDlgItem(hwndDlg, BTN_CLOSE), false);
     EnableWindow(GetDlgItem(hwndDlg, IDOK), true);
-    SetDlgItemTextW(hwndDlg, TXT_TITLE, L"You are about to create a snapshot of the current config's root file tree, this can take a long time. Are you ready ?");
+    SetDlgItemTextW(hwndDlg, TXT_TITLE, L"Будет создан снимок дерева файлов корневой папки текущей конфигурации, это может занять много времени. Продолжить?");
     GME_DlgSnapNewResize();
     return true;
 
@@ -83,7 +83,7 @@ BOOL CALLBACK GME_DlgSnapNew(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
       return true;
 
     case IDOK:
-      SetDlgItemTextW(hwndDlg, TXT_TITLE, L"Creating current file tree snapshot, please wait...");
+      SetDlgItemTextW(hwndDlg, TXT_TITLE, L"Создание снимка текущего дерева файлов, подождите...");
       /* resize dialog box */
       GetWindowRect(hwndDlg, &tmp_cli);
       SetWindowPos(hwndDlg, NULL, tmp_cli.left, tmp_cli.top, tmp_cli.right-tmp_cli.left, (tmp_cli.bottom-tmp_cli.top)+30, SWP_NOZORDER);
@@ -155,7 +155,7 @@ BOOL CALLBACK GME_DlgSnapComp(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
     ShowWindow(GetDlgItem(hwndDlg, ENT_OUTPUT), false);
 
     EnableWindow(GetDlgItem(hwndDlg, IDOK), true);
-    SetDlgItemTextW(hwndDlg, TXT_TITLE, L"You are about to compare snapshot with the current config's root file tree, this can take a long time. Are you ready ?");
+    SetDlgItemTextW(hwndDlg, TXT_TITLE, L"Снимок будет сравнён с деревом файлов корневой папки текущей конфигурации, это может занять много времени. Продолжить?");
     return true;
 
   case WM_SIZE:
@@ -181,7 +181,7 @@ BOOL CALLBACK GME_DlgSnapComp(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
       return true;
 
     case IDOK:
-      SetDlgItemTextW(hwndDlg, TXT_TITLE, L"Comparing current file tree with snapshot, please wait...");
+      SetDlgItemTextW(hwndDlg, TXT_TITLE, L"Сравнение текущего дерева файлов со снимком, подождите...");
       /* resize dialog box */
       GetWindowRect(hwndDlg, &tmp_cli);
       SetWindowPos(hwndDlg, NULL, tmp_cli.left, tmp_cli.top, tmp_cli.right-tmp_cli.left, (tmp_cli.bottom-tmp_cli.top)+150, SWP_NOZORDER);

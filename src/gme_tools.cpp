@@ -627,7 +627,7 @@ size_t GME_FileGetAsciiContent(const std::wstring& path, std::wstring* content)
 */
 void GME_DialogError(HWND hwnd, std::wstring message)
 {
-  MessageBoxW(hwnd, message.c_str(), L"OvGME Error", MB_OK|MB_ICONERROR);
+  MessageBoxW(hwnd, message.c_str(), L"OvGME — ошибка", MB_OK|MB_ICONERROR);
 }
 
 /*
@@ -635,7 +635,7 @@ void GME_DialogError(HWND hwnd, std::wstring message)
 */
 void GME_DialogWarning(HWND hwnd, std::wstring message)
 {
-  MessageBoxW(hwnd, message.c_str(), L"OvGME Warning", MB_OK|MB_ICONWARNING);
+  MessageBoxW(hwnd, message.c_str(), L"OvGME — предупреждение", MB_OK|MB_ICONWARNING);
 }
 
 /*
@@ -643,7 +643,7 @@ void GME_DialogWarning(HWND hwnd, std::wstring message)
 */
 int GME_DialogWarningConfirm(HWND hwnd, std::wstring message)
 {
-  return MessageBoxW(hwnd, message.c_str(), L"OvGME Warning", MB_YESNO|MB_ICONWARNING);
+  return MessageBoxW(hwnd, message.c_str(), L"OvGME — предупреждение", MB_YESNO|MB_ICONWARNING);
 }
 
 /*
@@ -651,7 +651,7 @@ int GME_DialogWarningConfirm(HWND hwnd, std::wstring message)
 */
 int GME_DialogQuestionConfirm(HWND hwnd, std::wstring message)
 {
-  return MessageBoxW(hwnd, message.c_str(), L"OvGME Question", MB_YESNO|MB_ICONQUESTION);
+  return MessageBoxW(hwnd, message.c_str(), L"OvGME — вопрос", MB_YESNO|MB_ICONQUESTION);
 }
 
 /*
@@ -659,7 +659,7 @@ int GME_DialogQuestionConfirm(HWND hwnd, std::wstring message)
 */
 void GME_DialogInfo(HWND hwnd, std::wstring message)
 {
-  MessageBoxW(hwnd, message.c_str(), L"OvGME Notice", MB_OK|MB_ICONINFORMATION);
+  MessageBoxW(hwnd, message.c_str(), L"OvGME — сообщение", MB_OK|MB_ICONINFORMATION);
 }
 
 /*
@@ -674,7 +674,7 @@ void GME_DialogDirChooser(HWND hwnd, wchar_t* path, size_t max)
   memset(pBrwsinfo, 0, sizeof(BROWSEINFO));
   pBrwsinfo->hwndOwner = hwnd;
   pBrwsinfo->pszDisplayName = NULL;
-  pBrwsinfo->lpszTitle = L"Choose a folder";
+  pBrwsinfo->lpszTitle = L"Выберите папку";
   pBrwsinfo->ulFlags = 0;
   pBrwsinfo->lpfn = NULL;
   pBrwsinfo->lParam = 0;
@@ -700,7 +700,7 @@ bool GME_DialogFileOpen(HWND hwnd, wchar_t* path, size_t max, unsigned* path_off
   pOpenfilename->lStructSize = sizeof(OPENFILENAMEW);
 
   pOpenfilename->hwndOwner = hwnd;
-  pOpenfilename->lpstrFilter = filter; //L"Mod archive (*.zip)\0*.ZIP;\0";
+  pOpenfilename->lpstrFilter = filter; //L"Мод-архив (*.zip)\0*.ZIP;\0";
   pOpenfilename->nMaxCustFilter = 0;
   pOpenfilename->nFilterIndex = 0;
 
@@ -746,7 +746,7 @@ bool GME_DialogFileSave(HWND hwnd, wchar_t* path, size_t max, unsigned* path_off
   pOpenfilename->lStructSize = sizeof(OPENFILENAMEW);
 
   pOpenfilename->hwndOwner = hwnd;
-  pOpenfilename->lpstrFilter = filter; //L"EXT file (*.ext)\0*.EXT;\0";
+  pOpenfilename->lpstrFilter = filter; //L"Файл EXT (*.ext)\0*.EXT;\0";
   pOpenfilename->nMaxCustFilter = 0;
   pOpenfilename->nFilterIndex = 0;
 

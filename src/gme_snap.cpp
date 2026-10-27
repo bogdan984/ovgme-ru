@@ -55,7 +55,7 @@ DWORD WINAPI GME_SnapCreate_Th(void* pargs)
 
   HWND hpb = GetDlgItem(g_hwndSnapNew, PBM_SNAP_NEW);
 
-  SetDlgItemTextW(g_hwndSnapNew, TXT_STATUS, L"Stage 1/2 analysing file tree...");
+  SetDlgItemTextW(g_hwndSnapNew, TXT_STATUS, L"Этап 1/2: анализ дерева файлов...");
 
   std::wstring game_path = GME_GameGetCurRoot();
   std::wstring back_path = GME_GameGetCurBackPath();
@@ -106,7 +106,7 @@ DWORD WINAPI GME_SnapCreate_Th(void* pargs)
   game_tree->initTraversal();
   while(game_tree->nextChild()) c++;
 
-  SetDlgItemTextW(g_hwndSnapNew, TXT_STATUS, L"Stage 2/2 creating xxHash....");
+  SetDlgItemTextW(g_hwndSnapNew, TXT_STATUS, L"Этап 2/2: вычисление xxHash...");
 
   /* set progress bar */
   SendMessage(hpb, PBM_SETRANGE, 0, MAKELPARAM(0, c));
@@ -166,8 +166,8 @@ DWORD WINAPI GME_SnapCreate_Th(void* pargs)
 
   delete game_tree;
 
-  SetDlgItemTextW(g_hwndSnapNew, TXT_TITLE, L"Snapshot creation successfully completed.");
-  SetDlgItemTextW(g_hwndSnapCmp, TXT_STATUS, L"Operation completed");
+  SetDlgItemTextW(g_hwndSnapNew, TXT_TITLE, L"Снимок успешно создан.");
+  SetDlgItemTextW(g_hwndSnapCmp, TXT_STATUS, L"Операция завершена");
   ShowWindow(GetDlgItem(g_hwndSnapNew, IDOK), false);
   ShowWindow(GetDlgItem(g_hwndSnapNew, IDCANCEL), false);
   ShowWindow(GetDlgItem(g_hwndSnapNew, BTN_CLOSE), true);
@@ -230,7 +230,7 @@ DWORD WINAPI GME_SnapCompare_Th(void* pargs)
     fclose(fp);
   }
 
-  SetDlgItemTextW(g_hwndSnapCmp, TXT_STATUS, L"Stage 1/3 analysing file tree...");
+  SetDlgItemTextW(g_hwndSnapCmp, TXT_STATUS, L"Этап 1/3: анализ дерева файлов...");
 
   /* get full tree from game root directory */
   GMEnode* game_tree = new GMEnode();
@@ -274,7 +274,7 @@ DWORD WINAPI GME_SnapCompare_Th(void* pargs)
   }
 
   /* init output log entry */
-  outlog = L"Type\tChange\tPath\r\n";
+  outlog = L"Тип\tИзменение\tПуть\r\n";
   SetDlgItemTextW(g_hwndSnapCmp, ENT_OUTPUT, outlog.c_str());
   SendMessage(hen_output, EM_SETLIMITTEXT, 0, 0);
 
@@ -293,7 +293,7 @@ DWORD WINAPI GME_SnapCompare_Th(void* pargs)
   SendMessage(hpb, PBM_SETSTEP, (WPARAM)1, 0);
   SendMessage(hpb, PBM_SETPOS, (WPARAM)0, 0);
 
-  SetDlgItemTextW(g_hwndSnapCmp, TXT_STATUS, L"Stage 2/3 comparing tree...");
+  SetDlgItemTextW(g_hwndSnapCmp, TXT_STATUS, L"Этап 2/3: сравнение дерева...");
 
   /* found file list */
   std::vector<bool> found_list;
@@ -371,7 +371,7 @@ DWORD WINAPI GME_SnapCompare_Th(void* pargs)
   SendMessage(hpb, PBM_SETSTEP, (WPARAM)1, 0);
   SendMessage(hpb, PBM_SETPOS, (WPARAM)0, 0);
 
-  SetDlgItemTextW(g_hwndSnapCmp, TXT_STATUS, L"Stage 3/3 comparing xxHash...");
+  SetDlgItemTextW(g_hwndSnapCmp, TXT_STATUS, L"Этап 3/3: сравнение xxHash...");
 
   /* new compare entries for xxHash32... */
   for(unsigned i = 0; i < found_list.size(); i++) {
@@ -412,15 +412,15 @@ DWORD WINAPI GME_SnapCompare_Th(void* pargs)
   int sc = duration - (mn * 60.0f);
 
   wchar_t wpbuff[128];
-  swprintf(wpbuff, 128, L"%d entries analysed in %d minute(s) and %d second(s).\r\n", iteration, mn, sc);
+  swprintf(wpbuff, 128, L"Проанализировано записей: %d, затрачено: %d мин %d с.\r\n", iteration, mn, sc);
   outlog += wpbuff;
-  swprintf(wpbuff, 128, L"%d addition(s).\r\n%d remove(s).\r\n%d change(s).\r\n", addition, removes, changes);
+  swprintf(wpbuff, 128, L"Добавлено: %d.\r\nУдалено: %d.\r\nИзменено: %d.\r\n", addition, removes, changes);
   outlog += wpbuff;
 
   GME_SnapLogAppend(hen_output, outlog.c_str());
 
-  SetDlgItemTextW(g_hwndSnapCmp, TXT_TITLE, L"Snapshot comparison successfully completed.");
-  SetDlgItemTextW(g_hwndSnapCmp, TXT_STATUS, L"Operation completed");
+  SetDlgItemTextW(g_hwndSnapCmp, TXT_TITLE, L"Сравнение со снимком успешно завершено.");
+  SetDlgItemTextW(g_hwndSnapCmp, TXT_STATUS, L"Операция завершена");
   ShowWindow(GetDlgItem(g_hwndSnapCmp, IDOK), false);
   ShowWindow(GetDlgItem(g_hwndSnapCmp, IDCANCEL), false);
   ShowWindow(GetDlgItem(g_hwndSnapCmp, BTN_CLOSE), true);
@@ -450,7 +450,7 @@ void GME_SnapCancel()
 bool GME_SnapCreate()
 {
   if(GME_GameGetCurId() == -1) {
-    GME_DialogWarning(g_hwndSnapNew, L"No config selected.");
+    GME_DialogWarning(g_hwndSnapNew, L"Конфигурация не выбрана.");
     return false;
   }
 
@@ -468,12 +468,12 @@ bool GME_SnapCreate()
 bool GME_SnapCompare()
 {
   if(GME_GameGetCurId() == -1) {
-    GME_DialogWarning(g_hwndSnapCmp, L"No config selected.");
+    GME_DialogWarning(g_hwndSnapCmp, L"Конфигурация не выбрана.");
     return false;
   }
 
   if(!GME_IsFile(GME_GameGetCurConfPath() + L"\\snapshot.dat")) {
-    GME_DialogWarning(g_hwndSnapCmp, L"No snapshot available for this config.");
+    GME_DialogWarning(g_hwndSnapCmp, L"Для этой конфигурации нет снимка.");
     return false;
   }
 

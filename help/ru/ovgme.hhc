@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+  <meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+  <!-- Sitemap 1.0 -->
+</HEAD>
+<BODY>
+<OBJECT type="text/site properties">
+  <param name="ExWindow Styles" value="0x800225">
+  <param name="Window Styles" value="0x800225">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">	<PARAM name="Name" value="Введение"><PARAM name="Local" value="introduction.html"><PARAM name="ImageNumber" value="0"></OBJECT>
+<LI> <OBJECT type="text/sitemap"><PARAM name="Name" value="Управление конфигурациями"> <PARAM name="ImageNumber" value="0">	</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">	<PARAM name="Name" value="Введение"> <PARAM name="Local" value="gameintro.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<LI> <OBJECT type="text/sitemap">	<PARAM name="Name" value="Добавление конфигурации"> <PARAM name="Local" value="gameadd.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Изменение конфигурации"> <PARAM name="Local" value="gameedit.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Удаление конфигурации"> <PARAM name="Local" value="gamerem.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Снимок корневой папки"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Введение"> <PARAM name="Local" value="snapintro.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Создание снимка"> <PARAM name="Local" value="snapnew.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Сравнение со снимком"> <PARAM name="Local" value="snapcomp.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap"> <param name="Name" value="Управление модами"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap"><PARAM name="Name" value="Введение"><PARAM name="Local" value="modsintro.html"><PARAM name="ImageNumber" value="0"></OBJECT>
+<LI> <OBJECT type="text/sitemap"><PARAM name="Name" value="Включение и отключение модов"><PARAM name="Local" value="modsenadis.html"><PARAM name="ImageNumber" value="0"> </OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Профили модов"> <PARAM name="Local" value="modsprofil.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Репозитории модов"> <PARAM name="Local" value="modsrepos.html"><PARAM name="ImageNumber" value="0"></OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Импорт модов"> <PARAM name="Local" value="modsimport.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Создание мод-архивов"> <PARAM name="Local" value="modsmake.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Вопросы о модах"> <PARAM name="Local" value="modsfaq.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Структура модов"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Введение"> <PARAM name="Local" value="structintro.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Мод-папка"> <PARAM name="Local" value="structdir.html"> <PARAM name="ImageNumber" value="0"></OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Мод-архив (Zip)"> <PARAM name="Local" value="structzip.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Версии модов"> <PARAM name="Local" value="structvers.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap"><param name="Name" value="Управление репозиториями"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Принцип работы репозитория"> <PARAM name="Local" value="reposbase.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="XML-данные репозитория"> <PARAM name="Local" value="reposxml.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="Вопросы о репозиториях"> <PARAM name="Local" value="reposfaq.html"> <PARAM name="ImageNumber" value="0"> </OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap"> <param name="Name" value="Совместимость"> <PARAM name="ImageNumber" value="0"></OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap"> <PARAM name="Name" value="OvGME и JSGME"> <PARAM name="Local" value="jsgmecomp.html"> <PARAM name="ImageNumber" value="0">	</OBJECT>
+</UL>
+</UL>
+</BODY>
+</HTML>

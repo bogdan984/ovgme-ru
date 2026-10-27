@@ -1,37 +1,37 @@
+﻿----------------------------------------------------------------------------------------
+OvGME (русская версия)
+
+Расширенный универсальный включатель и менеджер модов (Generic Mod Enabler).
 ----------------------------------------------------------------------------------------
-OvGME
-
-Enhanced Generic Mod Enabler and manager.
+Версия: 1.7.4
 ----------------------------------------------------------------------------------------
-Version: 1.7.4
-----------------------------------------------------------------------------------------
-Home page: https://github.com/sedenion/ovgme
+Домашняя страница оригинала: https://github.com/sedenion/ovgme
 
 ----------------------------------------------------------------------------------------
-Presentation
+Описание
 ----------------------------------------------------------------------------------------
 
-OvGME is a Mod manager based on the idea and concept of JSGME, it take the GME
-acronym from JSGME which stands for Generic Mod Enabler. The main purpose of OvGME is to
-provide an easy way to import and enable mods for games then restore original files when
-disabling mods. OvGME works by comparing the destination folder file tree with the given
-mod file tree, then identifies what files to replace, create and save as backup.
+OvGME — менеджер модов, основанный на идее и концепции JSGME; от JSGME он унаследовал
+сокращение GME — Generic Mod Enabler. Главная задача OvGME — дать простой способ
+импортировать и включать моды для игр, а затем восстанавливать оригинальные файлы при
+отключении модов. OvGME сравнивает дерево файлов папки назначения с деревом файлов мода
+и определяет, какие файлы заменить, создать и сохранить в резервной копии.
 
-OvGME implements the following key features:
+Основные возможности OvGME:
 
-	- Support for multiple destination folder (game, software, etc.) through the main GUI.
-	- Custom Mods and Backup folder for each destination folder.
-	- Destination folder file tree snapshot and comparison based on xxHash.
-	- Zipped Mods files (Mod-Archives).
-	- Mods description (readme.txt).
-	- Mods versioning.
-	- Mods enabling profile for each destination folder.
-	- Mods network repositories.
-	- Mods online updating and downloading.
-	- Zip Mod-Archive creation tool.
-	- XML repository creation tool.
-	- Detailed embedded Help.
+	- Несколько папок назначения (игр, программ и т. д.) в одном окне.
+	- Своя папка с модами и папка резервных копий для каждой папки назначения.
+	- Снимок дерева файлов папки назначения и сравнение с ним на основе xxHash.
+	- Моды в виде zip-архивов (мод-архивы).
+	- Описания модов (readme.txt).
+	- Версии модов.
+	- Профили включённых модов для каждой папки назначения.
+	- Сетевые репозитории модов.
+	- Загрузка и обновление модов через Интернет.
+	- Инструмент создания zip мод-архивов.
+	- Инструмент создания XML-файла репозитория.
+	- Подробная встроенная справка.
 
 
-**If you already use JSGME**
-Please read carefully the "OvGME and JSGME" chapter of the Help before doing anything.
+**Если вы уже пользуетесь JSGME**
+Прежде чем что-либо делать, внимательно прочитайте раздел «OvGME и JSGME» в справке.

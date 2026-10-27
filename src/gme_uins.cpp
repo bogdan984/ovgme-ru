@@ -37,7 +37,7 @@ void GME_Uninstall()
       GME_ModsUninstall();
     }
 
-    if(IDYES == GME_DialogQuestionConfirm(NULL, L"Do you want also remove all OvGME settings and configurations ?")) {
+    if(IDYES == GME_DialogQuestionConfirm(NULL, L"Удалить также все настройки и конфигурации OvGME?")) {
       GME_DirRemRecursive(GME_GetAppdataPath());
     }
   }

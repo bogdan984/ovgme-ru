@@ -289,7 +289,7 @@ bool GME_RepoUpdList()
   SendMessage(htv, TVM_DELETEITEM, 0, (LPARAM)TVI_ROOT);
 
   if(GME_GameGetCurId() == -1) {
-    GME_DialogError(g_hwndRepConf, L"No game selected.");
+    GME_DialogError(g_hwndRepConf, L"Игра не выбрана.");
     return false;
   }
 
@@ -298,7 +298,7 @@ bool GME_RepoUpdList()
 
 
   if(!GME_RepoReadList()) {
-    GME_DialogError(g_hwndRepConf, L"Unable to read repository configuration file.");
+    GME_DialogError(g_hwndRepConf, L"Не удалось прочитать файл настроек репозиториев.");
     return false;
   }
 
@@ -328,12 +328,12 @@ bool GME_RepoUpdList()
 bool GME_RepoAddUrl(const char* url)
 {
   if(GME_GameGetCurId() == -1) {
-    GME_DialogError(g_hwndRepConf, L"No game selected.");
+    GME_DialogError(g_hwndRepConf, L"Игра не выбрана.");
     return false;
   }
 
   if(!GME_NetwIsUrl(url)) {
-    GME_DialogError(g_hwndRepConf, L"'" + GME_StrToWcs(url) + L"' does not appear as a valid URL.");
+    GME_DialogError(g_hwndRepConf, L"'" + GME_StrToWcs(url) + L"' не похож на корректный URL.");
     return false;
   }
 
@@ -345,7 +345,7 @@ bool GME_RepoAddUrl(const char* url)
   g_GME_Repos_List.push_back(repos);
 
   if(!GME_RepoWritList()) {
-    GME_DialogError(g_hwndRepConf, L"Unable to write repository configuration file.");
+    GME_DialogError(g_hwndRepConf, L"Не удалось записать файл настроек репозиториев.");
     return false;
   }
 
@@ -386,7 +386,7 @@ bool GME_RepoRemUrl()
   }
 
   if(!GME_RepoWritList()) {
-    GME_DialogError(g_hwndRepConf, L"Unable to write repository configuration file.");
+    GME_DialogError(g_hwndRepConf, L"Не удалось записать файл настроек репозиториев.");
     return false;
   }
 
@@ -407,7 +407,7 @@ void GME_RepoCheckUpd()
   EnableWindow(GetDlgItem(g_hwndRepUpd, BTN_REPOUPDALL), false);
 
   if(g_GME_ReposMod_List.empty()) {
-    GME_DialogWarning(g_hwndRepUpd, L"No data found in repositories.");
+    GME_DialogWarning(g_hwndRepUpd, L"В репозиториях не найдено данных.");
     return;
   }
 
@@ -517,10 +517,14 @@ bool GME_RepoChkDesc()
     if(SendMessageW(hlv, LVM_GETITEMSTATE, i, LVIS_SELECTED)) {
 
       if(!sel_cnt) {
-        SendMessage(het, WM_SETTEXT, 0, (LPARAM)g_GME_ReposMod_List[i].desc.c_str());
+        if(g_GME_ReposMod_List[i].desc.empty()) {
+          SendMessageW(het, WM_SETTEXT, 0, (LPARAM)L"Описание отсутствует.");
+        } else {
+          SendMessage(het, WM_SETTEXT, 0, (LPARAM)g_GME_ReposMod_List[i].desc.c_str());
+        }
         sel_cnt++;
       } else {
-        SendMessageW(het, WM_SETTEXT, 0, (LPARAM)L"[Multiple selection]");
+        SendMessageW(het, WM_SETTEXT, 0, (LPARAM)L"[Выбрано несколько]");
         return false;
       }
     }
@@ -529,7 +533,7 @@ bool GME_RepoChkDesc()
   return true;
 }
 
-bool GME_RepoParseXml(const std::wstring& xml, std::vector<GME_ReposMod_Struct>* reposmod_list, std::string* log)
+bool GME_RepoParseXml(const std::wstring& xml, std::vector<GME_ReposMod_Struct>* reposmod_list, std::wstring* log)
 {
   GME_ReposMod_Struct reposmod;
 
@@ -546,9 +550,9 @@ bool GME_RepoParseXml(const std::wstring& xml, std::vector<GME_ReposMod_Struct>*
   }
 
   if(mod_list.empty()) {
-    GME_DialogWarning(g_hwndRepUpd, L"Repository XML parse error: no <mod_list> child found.");
+    GME_DialogWarning(g_hwndRepUpd, L"Ошибка разбора XML репозитория: не найден элемент <mod_list>.");
     GME_Logs(GME_LOG_ERROR, "GME_RepoParseXml", "Parse error", "no <mod_list> child found");
-    if(log) *log += "Parse error : no <mod_list> child found\r\n";
+    if(log) *log += L"Ошибка разбора: не найден элемент <mod_list>\r\n";
     return false;
   }
 
@@ -560,32 +564,32 @@ bool GME_RepoParseXml(const std::wstring& xml, std::vector<GME_ReposMod_Struct>*
     if(wcslen(child.name())) {
 
       if(!child.attribute(L"name")) {
-        GME_DialogWarning(g_hwndRepUpd, L"Repository XML parse error: 'name' attribute not found.");
+        GME_DialogWarning(g_hwndRepUpd, L"Ошибка разбора XML репозитория: не найден атрибут 'name'.");
         GME_Logs(GME_LOG_ERROR, "GME_RepoParseXml", "Parse error: 'name' attribute not found for child", std::to_string(child_i).c_str());
         if(log) {
-           *log += "Parse error : 'name' attribute not found for child #";
-           *log += std::to_string(child_i);
-           *log += "\r\n";
+           *log += L"Ошибка разбора: не найден атрибут 'name' у элемента #";
+           *log += std::to_wstring(child_i);
+           *log += L"\r\n";
         }
         continue;
       }
       if(!child.attribute(L"url")) {
-        GME_DialogWarning(g_hwndRepUpd, L"Repository XML parse error: 'url' attribute not found.");
+        GME_DialogWarning(g_hwndRepUpd, L"Ошибка разбора XML репозитория: не найден атрибут 'url'.");
         GME_Logs(GME_LOG_ERROR, "GME_RepoParseXml", "Parse error: 'url' attribute not found for child", std::to_string(child_i).c_str());
         if(log) {
-           *log += "Parse error : 'name' attribute not found for child #";
-           *log += std::to_string(child_i);
-           *log += "\r\n";
+           *log += L"Ошибка разбора: не найден атрибут 'url' у элемента #";
+           *log += std::to_wstring(child_i);
+           *log += L"\r\n";
         }
         continue;
       }
       if(!child.attribute(L"version")) {
-        GME_DialogWarning(g_hwndRepUpd, L"Repository XML parse error: 'version' attribute not found.");
+        GME_DialogWarning(g_hwndRepUpd, L"Ошибка разбора XML репозитория: не найден атрибут 'version'.");
         GME_Logs(GME_LOG_ERROR, "GME_RepoParseXml", "Parse error: 'version' attribute not found for child", std::to_string(child_i).c_str());
         if(log) {
-           *log += "Parse error : 'name' attribute not found for child #";
-           *log += std::to_string(child_i);
-           *log += "\r\n";
+           *log += L"Ошибка разбора: не найден атрибут 'version' у элемента #";
+           *log += std::to_wstring(child_i);
+           *log += L"\r\n";
         }
         continue;
       }
@@ -600,7 +604,7 @@ bool GME_RepoParseXml(const std::wstring& xml, std::vector<GME_ReposMod_Struct>*
       if(!child.first_child().empty()) {
         reposmod.desc = GME_ReposXmlDecode(child.child_value()); // this is content between <mod> <mod/>
       } else {
-        reposmod.desc = "No description available.";
+        reposmod.desc.clear();
       }
 
       /* check if mod is unique */
@@ -683,7 +687,7 @@ void GME_RepoDnl_OnErr(const char* url)
 {
   HWND hpb = GetDlgItem(g_hwndRepUpd, PBM_DONWLOAD);
   SendMessage(hpb, PBM_SETPOS, (WPARAM)0, 0);
-  SetDlgItemText(g_hwndRepUpd, TXT_DOWNSPEED, "---- Kio/s");
+  SetDlgItemTextW(g_hwndRepUpd, TXT_DOWNSPEED, L"---- КиБ/с");
   GME_RepoDnl_SetItemProgress(g_GME_ReposDnl_List[g_ReposQry_Id].name, -1);
 }
 
@@ -692,9 +696,9 @@ bool GME_RepoDnl_OnDnl(unsigned percent, unsigned rate)
   HWND hpb = GetDlgItem(g_hwndRepUpd, PBM_DONWLOAD);
   SendMessage(hpb, PBM_SETPOS, (WPARAM)percent, 0);
   /* update item in list view */
-  char buff[64];
-  sprintf(buff, "%d Kio/s", (rate/1024));
-  SetDlgItemText(g_hwndRepUpd, TXT_DOWNSPEED, buff);
+  wchar_t buff[64];
+  swprintf(buff, 64, L"%d КиБ/с", (rate/1024));
+  SetDlgItemTextW(g_hwndRepUpd, TXT_DOWNSPEED, buff);
   GME_RepoDnl_SetItemProgress(g_GME_ReposDnl_List[g_ReposQry_Id].name, percent);
   return (g_ReposQry_Cancel == false);
 }
@@ -703,7 +707,7 @@ void GME_RepoDnl_OnSav(const wchar_t* path)
 {
   HWND hpb = GetDlgItem(g_hwndRepUpd, PBM_DONWLOAD);
   SendMessage(hpb, PBM_SETPOS, (WPARAM)100, 0);
-  SetDlgItemText(g_hwndRepUpd, TXT_DOWNSPEED, "---- Kio/s");
+  SetDlgItemTextW(g_hwndRepUpd, TXT_DOWNSPEED, L"---- КиБ/с");
   /* delete old file */
   std::wstring mod_path = GME_GameGetCurModsPath() + L"\\";
   mod_path += g_GME_ReposDnl_List[g_ReposQry_Id].name;
@@ -711,16 +715,16 @@ void GME_RepoDnl_OnSav(const wchar_t* path)
   if(GME_IsFile(mod_path)) {
     if(!GME_FileDelete(mod_path)) {
       GME_Logs(GME_LOG_ERROR, "GME_RepoDnl_OnSav", "Unable to delete old file", GME_StrToMbs(mod_path).c_str());
-      GME_DialogWarning(g_hwndRepUpd, L"Download finalization error, see debug logs for details.");
+      GME_DialogWarning(g_hwndRepUpd, L"Ошибка завершения загрузки, подробности в журнале отладки.");
     }
   }
   if(!GME_FileMove(path, mod_path, true)) {
     GME_Logs(GME_LOG_ERROR, "GME_RepoDnl_OnSav", "Unable to rename temporary file", GME_StrToMbs(path).c_str());
-    GME_DialogWarning(g_hwndRepUpd, L"Download finalization error, see debug logs for details.");
+    GME_DialogWarning(g_hwndRepUpd, L"Ошибка завершения загрузки, подробности в журнале отладки.");
   }
   /* update item in list view */
   GME_RepoDnl_SetItemProgress(g_GME_ReposDnl_List[g_ReposQry_Id].name, -1);
-  GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[g_ReposQry_Id].name, L"Completed");
+  GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[g_ReposQry_Id].name, L"Готово");
   GME_Logs(GME_LOG_NOTICE, "GME_RepoDnl_OnSav", "Download Done", GME_StrToMbs(mod_path).c_str());
 }
 
@@ -736,71 +740,73 @@ DWORD WINAPI GME_RepoQueryDnl_Th(void* args)
   int http_err;
   int http_fail = 0;
   std::string err_msg;
+  std::wstring err_wmsg;
 
   for(unsigned i = 0; i < g_GME_ReposDnl_List.size(); i++) {
 
     g_ReposQry_Id = i;
 
     /* disabling old version before download */
-    GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"Disabling old...");
+    GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"Отключение старого...");
     GME_ModsRestoreMod(hpb, g_GME_ReposDnl_List[i].name);
 
     /* here we go for file download */
     SendMessage(hpb, PBM_SETRANGE, 0, MAKELPARAM(0, 100));
     EnableWindow(GetDlgItem(g_hwndRepUpd, BTN_CANCEL), true);
-    GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"Downloading...");
+    GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"Загрузка...");
     GME_Logs(GME_LOG_NOTICE, "GME_RepoQueryDnl_Th", "Downloading", g_GME_ReposDnl_List[i].url);
     http_err = GME_NetwHttpGET(g_GME_ReposDnl_List[i].url, GME_RepoDnl_OnErr, GME_RepoDnl_OnDnl, GME_RepoDnl_OnSav, GME_GameGetCurModsPath());
     if(http_err) {
       http_fail++;
       if(http_err < 10) {
-        err_msg = "Download failed for '" + GME_StrToMbs(g_GME_ReposDnl_List[i].name) + "':\r\n\r\n    ";
+        err_wmsg = L"Не удалось загрузить '" + std::wstring(g_GME_ReposDnl_List[i].name) + L"':\r\n\r\n    ";
         switch(http_err)
         {
         case GME_HTTPGET_ERR_DNS:
-          GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"Host not found");
+          GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"Узел не найден");
           GME_Logs(GME_LOG_WARNING, "GME_RepoQueryDnl_Th", "Download failed", "Host not found");
-          err_msg += "Host not found";
+          err_wmsg += L"Узел не найден";
           break;
         case GME_HTTPGET_ERR_CNX:
-          GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"Connection error");
+          GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"Ошибка соединения");
           GME_Logs(GME_LOG_WARNING, "GME_RepoQueryDnl_Th", "Download failed", "Connection error");
-          err_msg += "Connection error";
+          err_wmsg += L"Ошибка соединения";
           break;
         case GME_HTTPGET_ERR_ENC:
-          GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"HTTP transfer error");
+          GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"Ошибка передачи HTTP");
           GME_Logs(GME_LOG_WARNING, "GME_RepoQueryDnl_Th", "Download failed", "HTTP transfer error");
-          err_msg += "HTTP transfer error";
+          err_wmsg += L"Ошибка передачи HTTP";
           break;
         case GME_HTTPGET_ERR_REC:
-          GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"Connection lost");
+          GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"Соединение потеряно");
           GME_Logs(GME_LOG_WARNING, "GME_RepoQueryDnl_Th", "Download failed", "Connection lost");
-          err_msg += "Connection lost";
+          err_wmsg += L"Соединение потеряно";
           break;
         case GME_HTTPGET_ERR_FOP:
-          GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"I/O Open error");
+          GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"Ошибка открытия файла");
           GME_Logs(GME_LOG_WARNING, "GME_RepoQueryDnl_Th", "Download failed", "I/O Open error");
-          err_msg += "I/O Open error";
+          err_wmsg += L"Ошибка открытия файла";
           break;
         case GME_HTTPGET_ERR_FWR:
-          GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"I/O Write error");
+          GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"Ошибка записи файла");
           GME_Logs(GME_LOG_WARNING, "GME_RepoQueryDnl_Th", "Download failed", "I/O Write error");
-          err_msg += "I/O Write error";
+          err_wmsg += L"Ошибка записи файла";
           break;
         }
-        GME_DialogWarning(g_hwndRepUpd, GME_StrToWcs(err_msg));
+        GME_DialogWarning(g_hwndRepUpd, err_wmsg);
       } else {
         err_msg = "HTTP error ";
         err_msg += std::to_string(http_err);
-        GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, GME_StrToWcs(err_msg).c_str());
+        err_wmsg = L"Ошибка HTTP " + std::to_wstring(http_err);
+        GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, err_wmsg.c_str());
         GME_Logs(GME_LOG_WARNING, "GME_RepoQueryDnl_Th", "Download failed", err_msg.c_str());
-        GME_DialogWarning(g_hwndRepUpd, L"Download failed for '" + std::wstring(g_GME_ReposDnl_List[i].name) + L"':\r\n\r\n    " + GME_StrToWcs(err_msg));
+        GME_DialogWarning(g_hwndRepUpd, L"Не удалось загрузить '" + std::wstring(g_GME_ReposDnl_List[i].name) + L"':\r\n\r\n    " + err_wmsg);
       }
     }
 
     if(g_ReposQry_Cancel) {
       SendMessage(hpb, PBM_SETPOS, (WPARAM)0, 0);
-      SetDlgItemText(g_hwndRepUpd, TXT_DOWNSPEED, "---- Kio/s");
+      SetDlgItemTextW(g_hwndRepUpd, TXT_DOWNSPEED, L"---- КиБ/с");
 
       for(unsigned i = 0; i < g_GME_ReposDnl_List.size(); i++) {
         GME_RepoDnl_SetItemStatus(g_GME_ReposDnl_List[i].name, L"");
@@ -820,7 +826,7 @@ DWORD WINAPI GME_RepoQueryDnl_Th(void* args)
   }
 
   SendMessage(hpb, PBM_SETPOS, (WPARAM)0, 0);
-  SetDlgItemText(g_hwndRepUpd, TXT_DOWNSPEED, "---- Kio/s");
+  SetDlgItemTextW(g_hwndRepUpd, TXT_DOWNSPEED, L"---- КиБ/с");
 
   g_GME_ReposDnl_List.clear();
 
@@ -855,7 +861,7 @@ void GME_RepoUpd_OnEnd(const char* body, size_t body_size)
   SendMessage(hpb, PBM_SETPOS, (WPARAM)100, 0);
   //GME_RepoParseXml(GME_StrToWcs(body));
   if(!GME_RepoParseXml(GME_StrToWcs(body), &g_GME_ReposMod_List, NULL)) {
-    GME_DialogWarning(g_hwndRepUpd, L"Repository query failed, XML Parsing error.");
+    GME_DialogWarning(g_hwndRepUpd, L"Ошибка запроса к репозиторию: ошибка разбора XML.");
   }
 }
 
@@ -869,20 +875,21 @@ DWORD WINAPI GME_RepoQueryUpd_Th(void* args)
   GME_RepoUpdList();
 
   if(g_GME_Repos_List.empty()) {
-    GME_DialogWarning(g_hwndRepUpd, L"The repository list is empty.");
+    GME_DialogWarning(g_hwndRepUpd, L"Список репозиториев пуст.");
     g_ReposQry_Running = false;
     return 0;
   }
 
-  SetDlgItemTextW(g_hwndRepUpd, TXT_REPOQRYSTATUS, L"Getting data from repositories...");
+  SetDlgItemTextW(g_hwndRepUpd, TXT_REPOQRYSTATUS, L"Получение данных из репозиториев...");
   HWND hpb = GetDlgItem(g_hwndRepUpd, PBM_REPOQRY);
 
   int http_err;
   int http_fail = 0;
   int http_reqs = 0;
   std::string err_msg;
+  std::wstring err_wmsg;
   std::string xml_url;
-  std::string cnx_msg;
+  std::wstring cnx_msg;
 
   for(unsigned i = 0; i < g_GME_Repos_List.size(); i++) {
 
@@ -920,8 +927,8 @@ DWORD WINAPI GME_RepoQueryUpd_Th(void* args)
 
     SendMessage(hpb, PBM_SETRANGE, 0, MAKELPARAM(0, 100));
     unsigned l = std::string(g_GME_Repos_List[i].url).find_first_of("/", 0);
-    cnx_msg = "Try connecting to "; cnx_msg += std::string(g_GME_Repos_List[i].url).substr(0, l); cnx_msg += " please wait...";
-    SetDlgItemText(g_hwndRepUpd, TXT_REPOQRYURL, cnx_msg.c_str());
+    cnx_msg = L"Подключение к " + GME_StrToWcs(std::string(g_GME_Repos_List[i].url).substr(0, l)) + L", подождите...";
+    SetDlgItemTextW(g_hwndRepUpd, TXT_REPOQRYURL, cnx_msg.c_str());
 
     GME_Logs(GME_LOG_NOTICE, "GME_RepoQueryUpd_Th", "Try HTTP access", xml_url.c_str());
 
@@ -930,50 +937,57 @@ DWORD WINAPI GME_RepoQueryUpd_Th(void* args)
       err_msg = "Query failed for repository '";
       err_msg += xml_url;
       err_msg += "':\r\n\r\n    ";
+      err_wmsg = L"Ошибка запроса к репозиторию '" + GME_StrToWcs(xml_url) + L"':\r\n\r\n    ";
       http_fail++;
       if(http_err < 10) {
         switch(http_err)
         {
         case GME_HTTPGET_ERR_DNS:
           err_msg += "Connection error: Host not found.";
+          err_wmsg += L"Ошибка соединения: узел не найден.";
           GME_Logs(GME_LOG_WARNING, "GME_RepoQueryUpd_Th", "Connection failed", "Host not found");
           break;
         case GME_HTTPGET_ERR_CNX:
           err_msg += "Connection error: Connection refused or timed out.";
+          err_wmsg += L"Ошибка соединения: соединение отклонено или истекло время ожидания.";
           GME_Logs(GME_LOG_WARNING, "GME_RepoQueryUpd_Th", "Connection failed", "Connection refused or timed out");
           break;
         case GME_HTTPGET_ERR_ENC:
           err_msg += "Unsupported HTTP chunked transfer encoding.";
+          err_wmsg += L"Неподдерживаемая кодировка передачи HTTP (chunked).";
           GME_Logs(GME_LOG_WARNING, "GME_RepoQueryUpd_Th", "Connection failed", "Unsupported HTTP chunked transfer encoding");
           break;
         case GME_HTTPGET_ERR_BAL:
           err_msg += "Bad alloc, no enough memory to store HTTP response.";
+          err_wmsg += L"Недостаточно памяти для хранения ответа HTTP.";
           GME_Logs(GME_LOG_WARNING, "GME_RepoQueryUpd_Th", "Connection failed", "Bad alloc, no enough memory to store HTTP response");
           break;
         case GME_HTTPGET_ERR_REC:
           err_msg += "Connection error: Lost connection.";
+          err_wmsg += L"Ошибка соединения: соединение потеряно.";
           GME_Logs(GME_LOG_WARNING, "GME_RepoQueryUpd_Th", "Connection failed", "Lost connection");
           break;
         }
       } else {
         err_msg += "HTTP request error: ";
         err_msg += std::to_string(http_err);
+        err_wmsg += L"Ошибка HTTP-запроса: " + std::to_wstring(http_err);
         switch(http_err)
         {
-        case 401: err_msg += " (Unauthorized)"; break;
-        case 400: err_msg += " (Bad request)"; break;
-        case 403: err_msg += " (Forbidden)"; break;
-        case 404: err_msg += " (Not found)"; break;
-        case 500: err_msg += " (Internal server error)"; break;
-        case 502: err_msg += " (Bad gateway)"; break;
-        case 503: err_msg += " (Service temporarily unavailable)"; break;
-        case 504: err_msg += " (Gateway time-out)"; break;
-        case 408: err_msg += " (Request Time-Out)"; break;
-        case 410: err_msg += " (Gone)"; break;
+        case 401: err_msg += " (Unauthorized)"; err_wmsg += L" (Требуется авторизация)"; break;
+        case 400: err_msg += " (Bad request)"; err_wmsg += L" (Неверный запрос)"; break;
+        case 403: err_msg += " (Forbidden)"; err_wmsg += L" (Доступ запрещён)"; break;
+        case 404: err_msg += " (Not found)"; err_wmsg += L" (Не найдено)"; break;
+        case 500: err_msg += " (Internal server error)"; err_wmsg += L" (Внутренняя ошибка сервера)"; break;
+        case 502: err_msg += " (Bad gateway)"; err_wmsg += L" (Ошибочный шлюз)"; break;
+        case 503: err_msg += " (Service temporarily unavailable)"; err_wmsg += L" (Сервис временно недоступен)"; break;
+        case 504: err_msg += " (Gateway time-out)"; err_wmsg += L" (Шлюз не отвечает)"; break;
+        case 408: err_msg += " (Request Time-Out)"; err_wmsg += L" (Истекло время запроса)"; break;
+        case 410: err_msg += " (Gone)"; err_wmsg += L" (Ресурс удалён)"; break;
         }
       }
       GME_Logs(GME_LOG_WARNING, "GME_RepoQueryUpd_Th", "HTTP access failed", err_msg.c_str());
-      GME_DialogWarning(g_hwndRepUpd, GME_StrToWcs(err_msg));
+      GME_DialogWarning(g_hwndRepUpd, err_wmsg);
     }
 
     if(g_ReposQry_Cancel) {
@@ -983,9 +997,9 @@ DWORD WINAPI GME_RepoQueryUpd_Th(void* args)
   }
 
   SendMessage(hpb, PBM_SETPOS, (WPARAM)0, 0);
-  SetDlgItemTextW(g_hwndRepUpd, TXT_REPOQRYSTATUS, L"Repositories query completed");
+  SetDlgItemTextW(g_hwndRepUpd, TXT_REPOQRYSTATUS, L"Опрос репозиториев завершён");
   wchar_t result[64];
-  swprintf(result, 64, L"%d repository checked, %d failed.", http_reqs, http_fail);
+  swprintf(result, 64, L"Проверено репозиториев: %d, с ошибкой: %d.", http_reqs, http_fail);
   SetDlgItemTextW(g_hwndRepUpd, TXT_REPOQRYURL, result);
 
   GME_RepoCheckUpd();
@@ -1009,7 +1023,7 @@ void GME_RepoQueryUpd()
 void GME_RepoDownloadSel()
 {
   if(!g_GME_ReposDnl_List.empty()) {
-    GME_DialogWarning(g_hwndRepUpd, L"Downloading process is already running, please wait or cancel current process...");
+    GME_DialogWarning(g_hwndRepUpd, L"Загрузка уже выполняется. Подождите или отмените текущий процесс...");
     return;
   }
 
@@ -1037,7 +1051,7 @@ void GME_RepoDownloadSel()
         for(unsigned j = 0; j < g_GME_ReposMod_List.size(); j++) {
           if(!wcscmp(lvitm.pszText, g_GME_ReposMod_List[j].name)) {
             g_GME_ReposDnl_List.push_back(g_GME_ReposMod_List[j]);
-            GME_RepoDnl_SetItemStatus(g_GME_ReposMod_List[j].name, L"Pending...");
+            GME_RepoDnl_SetItemStatus(g_GME_ReposMod_List[j].name, L"В очереди...");
             break;
           }
         }
@@ -1046,7 +1060,7 @@ void GME_RepoDownloadSel()
   }
 
   if(!reject_list.empty()) {
-    std::wstring msg = L"Mod(s) already up to date will not be downloaded.\n\n";
+    std::wstring msg = L"Уже актуальные моды загружены не будут.\n\n";
     for(unsigned i = 0; i < reject_list.size(); i++) {
       msg += reject_list[i] + L"\n";
     }
@@ -1060,7 +1074,7 @@ void GME_RepoDownloadSel()
 void GME_RepoDownloadAll()
 {
   if(!g_GME_ReposDnl_List.empty()) {
-    GME_DialogWarning(g_hwndRepUpd, L"Downloading process is already running, please wait or cancel current process...");
+    GME_DialogWarning(g_hwndRepUpd, L"Загрузка уже выполняется. Подождите или отмените текущий процесс...");
     return;
   }
 
@@ -1087,7 +1101,7 @@ void GME_RepoDownloadAll()
       for(unsigned j = 0; j < g_GME_ReposMod_List.size(); j++) {
         if(!wcscmp(lvitm.pszText, g_GME_ReposMod_List[j].name)) {
           g_GME_ReposDnl_List.push_back(g_GME_ReposMod_List[j]);
-          GME_RepoDnl_SetItemStatus(g_GME_ReposMod_List[j].name, L"Pending...");
+          GME_RepoDnl_SetItemStatus(g_GME_ReposMod_List[j].name, L"В очереди...");
           break;
         }
       }
@@ -1095,7 +1109,7 @@ void GME_RepoDownloadAll()
   }
 
   if(!reject_list.empty()) {
-    std::wstring msg = L"Mod(s) already up to date will not be downloaded.\n\n";
+    std::wstring msg = L"Уже актуальные моды загружены не будут.\n\n";
     for(unsigned i = 0; i < reject_list.size(); i++) {
       msg += reject_list[i] + L"\n";
     }
@@ -1177,7 +1191,7 @@ std::string GME_RepoMakeXml(const char* url_str, bool cust_path, const wchar_t* 
 {
 
   if(!GME_NetwIsUrl(url_str)) {
-    GME_DialogError(g_hwndRepXml, L"'" + GME_StrToWcs(url_str) + L"' does not appear as a valid URL.");
+    GME_DialogError(g_hwndRepXml, L"'" + GME_StrToWcs(url_str) + L"' не похож на корректный URL.");
     return std::string();
   }
 
@@ -1223,7 +1237,7 @@ std::string GME_RepoMakeXml(const char* url_str, bool cust_path, const wchar_t* 
   FindClose(hnd);
 
   if(name_list.empty()) {
-    GME_DialogWarning(g_hwndRepXml, L"No valid Mod-Archive found for XML generation.");
+    GME_DialogWarning(g_hwndRepXml, L"Не найдено корректных мод-архивов для создания XML.");
     return std::string();
   }
 
@@ -1262,21 +1276,21 @@ bool GME_RepoSaveXml()
   xml_src_size = GetWindowTextLength(GetDlgItem(g_hwndRepXml, ENT_OUTPUT));
 
   if(xml_src_size < 2) {
-    GME_DialogWarning(g_hwndRepXml, L"The XML source buffer is empty.");
+    GME_DialogWarning(g_hwndRepXml, L"Буфер XML-источника пуст.");
     return false;
   }
 
   unsigned path_offset;
   wchar_t buffer[260];
 
-  if(!GME_DialogFileSave(g_hwndRepXml, buffer, 260, &path_offset, L"xml", L"XML file (*.xml)\0*.XML;\0", L"")) {
+  if(!GME_DialogFileSave(g_hwndRepXml, buffer, 260, &path_offset, L"xml", L"Файл XML (*.xml)\0*.XML;\0", L"")) {
     return false;
   }
 
   std::wstring file_path = buffer;
 
   if(GME_IsFile(file_path)) {
-    if(IDNO == GME_DialogQuestionConfirm(g_hwndRepXml, L"The file '" + file_path + L"' already exists, do you want to overwrite it ?")) {
+    if(IDNO == GME_DialogQuestionConfirm(g_hwndRepXml, L"Файл '" + file_path + L"' уже существует. Перезаписать?")) {
       return false;
     }
   }
@@ -1308,19 +1322,30 @@ bool GME_RepoSaveXml()
 
     fclose(fp);
     delete[] xml_src;
-    GME_DialogInfo(g_hwndRepXml, L"XML repository file '" + file_path + L"' successfully saved.");
+    GME_DialogInfo(g_hwndRepXml, L"XML-файл репозитория '" + file_path + L"' успешно сохранён.");
     return true;
   }
 
-  GME_DialogWarning(g_hwndRepXml, L"Unable to write file '" + file_path + L"'.");
+  GME_DialogWarning(g_hwndRepXml, L"Не удалось записать файл '" + file_path + L"'.");
 
   return false;
 }
 
+static std::wstring GME_RepoAcpToWcs(const std::string& str)
+{
+  // ANSI code page, same conversion the former SetDlgItemTextA applied
+  int n = MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, NULL, 0);
+  if(n <= 0) return std::wstring();
+  std::wstring wcs(n, L'\0');
+  MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, &wcs[0], n);
+  wcs.resize(n - 1);
+  return wcs;
+}
+
 bool GME_RepoTestXml(const wchar_t* path, unsigned offst)
 {
-  std::string log;
-  std::string output;
+  std::wstring log;
+  std::wstring output;
   std::wstring content;
   std::wstring file_path = path;
 
@@ -1329,29 +1354,29 @@ bool GME_RepoTestXml(const wchar_t* path, unsigned offst)
     std::vector<GME_ReposMod_Struct> reposmod_list;
 
     if(!GME_RepoParseXml(content, &reposmod_list, &log)) {
-      SetDlgItemText(g_hwndRepXts, TXT_MESSAGE, "XML repository file parsing error occurred, the repository XML source file is not valid.");
-      SetDlgItemText(g_hwndRepXts, ENT_OUTPUT, log.c_str());
+      SetDlgItemTextW(g_hwndRepXts, TXT_MESSAGE, L"Ошибка разбора XML-файла репозитория: XML-источник некорректен.");
+      SetDlgItemTextW(g_hwndRepXts, ENT_OUTPUT, log.c_str());
       return false;
     }
 
-    SetDlgItemText(g_hwndRepXts, TXT_MESSAGE, "XML repository file parsing succeed, the repository XML source file appear valid.");
+    SetDlgItemTextW(g_hwndRepXts, TXT_MESSAGE, L"XML-файл репозитория успешно разобран: XML-источник корректен.");
 
     for(unsigned i = 0; i < reposmod_list.size(); i++) {
-      output += "==================================================================================================\r\nMod: \"";
-      output += GME_StrToMbs(reposmod_list[i].name);
-      output += "\"\r\nVer: \"";
-      output += GME_StrToMbs(GME_RepoVersString(reposmod_list[i].version));
-      output += "\"\r\nUrl: \"";
-      output += reposmod_list[i].url;
-      output += "\"\r\nDescription:\r\n";
-      output +=  reposmod_list[i].desc;
-      output += "\r\n\r\n";
+      output += L"==================================================================================================\r\nМод: \"";
+      output += reposmod_list[i].name;
+      output += L"\"\r\nВерсия: \"";
+      output += GME_RepoVersString(reposmod_list[i].version);
+      output += L"\"\r\nURL: \"";
+      output += GME_RepoAcpToWcs(reposmod_list[i].url);
+      output += L"\"\r\nОписание:\r\n";
+      output += reposmod_list[i].desc.empty() ? std::wstring(L"Описание отсутствует.") : GME_RepoAcpToWcs(reposmod_list[i].desc);
+      output += L"\r\n\r\n";
     }
 
-    SetDlgItemText(g_hwndRepXts, ENT_OUTPUT, output.c_str());
+    SetDlgItemTextW(g_hwndRepXts, ENT_OUTPUT, output.c_str());
 
   } else {
-    GME_DialogWarning(g_hwndRepXml, L"Unable to read file '" + file_path + L"'.");
+    GME_DialogWarning(g_hwndRepXml, L"Не удалось прочитать файл '" + file_path + L"'.");
     return false;
   }
 

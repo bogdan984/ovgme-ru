@@ -82,13 +82,13 @@ void GME_MainInit()
   lvcol.mask = LVCF_TEXT|LVCF_WIDTH;
   lvcol.cchTextMax = 255;
 
-  wcscpy(buff, L"Mod");
+  wcscpy(buff, L"Мод");
   lvcol.pszText = buff;
   lvcol.cx = 650;
   lvcol.iSubItem = 0;
   SendMessageW(GetDlgItem(g_hwndMain, LVM_MODSLIST), LVM_INSERTCOLUMNW, 0, (LPARAM)&lvcol);
 
-  wcscpy(buff, L"Version");
+  wcscpy(buff, L"Версия");
   lvcol.pszText = buff;
   lvcol.cx = 70;
   lvcol.iSubItem = 1;
@@ -144,16 +144,16 @@ void GME_MainPopMenuMods()
 
   HMENU hMenuPopup = CreatePopupMenu();
   if(single) {
-    AppendMenu(hMenuPopup, MF_STRING, POP_TOGGLE, "Toggle");
+    AppendMenuW(hMenuPopup, MF_STRING, POP_TOGGLE, L"Переключить");
     AppendMenu(hMenuPopup, MFT_SEPARATOR, MFT_SEPARATOR, "---");
-    AppendMenu(hMenuPopup, MF_STRING, POP_OPENDIR, "Explore...");
-    AppendMenu(hMenuPopup, MF_STRING, POP_MODDELETE, "Delete...");
+    AppendMenuW(hMenuPopup, MF_STRING, POP_OPENDIR, L"Открыть в проводнике...");
+    AppendMenuW(hMenuPopup, MF_STRING, POP_MODDELETE, L"Удалить...");
     AppendMenu(hMenuPopup, MFT_SEPARATOR, MFT_SEPARATOR, "---");
-    AppendMenu(hMenuPopup, MF_STRING, POP_MODCREATE, "Make Mod-Archive...");
+    AppendMenuW(hMenuPopup, MF_STRING, POP_MODCREATE, L"Создать мод-архив...");
   } else {
-    AppendMenu(hMenuPopup, MF_STRING, POP_TOGGLE, "Toggle selected");
-    AppendMenu(hMenuPopup, MF_STRING, POP_ENABLE, "Enable selected");
-    AppendMenu(hMenuPopup, MF_STRING, POP_DISABLE, "Disable selected");
+    AppendMenuW(hMenuPopup, MF_STRING, POP_TOGGLE, L"Переключить выбранные");
+    AppendMenuW(hMenuPopup, MF_STRING, POP_ENABLE, L"Включить выбранные");
+    AppendMenuW(hMenuPopup, MF_STRING, POP_DISABLE, L"Отключить выбранные");
   }
 
   switch(type)
@@ -198,10 +198,10 @@ void GME_DlgMainResize()
   SetWindowPos(GetDlgItem(hwd, BTN_QUIT), NULL, cli.right-90, cli.bottom-30, 80, 23, SWP_NOZORDER);
   SetWindowPos(GetDlgItem(hwd, ENT_MODDESC), NULL, 20, cli.bottom-160, cli.right-40, 110, SWP_NOZORDER);
   SetWindowPos(GetDlgItem(hwd, LAB_MODDESC), NULL, 20, cli.bottom-175, 150, 15, SWP_NOZORDER);
-  SetWindowPos(GetDlgItem(hwd, BTN_MODDIS), NULL, 20, cli.bottom-203, 100, 23, SWP_NOZORDER);
-  SetWindowPos(GetDlgItem(hwd, BTN_MODENA), NULL, 120, cli.bottom-203, 100, 23, SWP_NOZORDER);
+  SetWindowPos(GetDlgItem(hwd, BTN_MODDIS), NULL, 20, cli.bottom-203, 130, 23, SWP_NOZORDER);
+  SetWindowPos(GetDlgItem(hwd, BTN_MODENA), NULL, 152, cli.bottom-203, 130, 23, SWP_NOZORDER);
   SetWindowPos(GetDlgItem(hwd, BTN_MODCANCEL), NULL, cli.right-100, cli.bottom-203, 80, 23, SWP_NOZORDER);
-  SetWindowPos(GetDlgItem(hwd, PBM_MODPROC), NULL, 225, cli.bottom-203, cli.right-330, 22, SWP_NOZORDER);
+  SetWindowPos(GetDlgItem(hwd, PBM_MODPROC), NULL, 287, cli.bottom-203, cli.right-392, 22, SWP_NOZORDER);
 
   SetWindowPos(GetDlgItem(hwd, LVM_MODSLIST), NULL, 20, 135, cli.right-40, cli.bottom-345, SWP_NOZORDER);
 
@@ -222,9 +222,9 @@ void GME_DlgMainResize()
   SetWindowPos(GetDlgItem(hwd, ENT_MODSPATH), NULL, 20, 91, cli.right-130, 21, SWP_NOZORDER);
 
   SetWindowPos(GetDlgItem(hwd, BOX_TOP), NULL, 155, 0, cli.right-165, 80, SWP_NOZORDER);
-  SetWindowPos(GetDlgItem(hwd, CMB_GAMELIST), NULL, 165, 20, cli.right-260, 22, SWP_NOZORDER);
-  SetWindowPos(GetDlgItem(hwd, BTN_EDIGAME), NULL, cli.right-92, 19, 35, 23, SWP_NOZORDER);
-  SetWindowPos(GetDlgItem(hwd, BTN_ADDGAME), NULL, cli.right-55, 19, 35, 23, SWP_NOZORDER);
+  SetWindowPos(GetDlgItem(hwd, CMB_GAMELIST), NULL, 165, 20, cli.right-310, 22, SWP_NOZORDER);
+  SetWindowPos(GetDlgItem(hwd, BTN_EDIGAME), NULL, cli.right-142, 19, 60, 23, SWP_NOZORDER);
+  SetWindowPos(GetDlgItem(hwd, BTN_ADDGAME), NULL, cli.right-80, 19, 60, 23, SWP_NOZORDER);
   SetWindowPos(GetDlgItem(hwd, ENT_CFGRPATH), NULL, 165, 45, cli.right-185, 21, SWP_NOZORDER);
 }
 
@@ -264,7 +264,7 @@ BOOL CALLBACK GME_DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     EnableWindow(GetDlgItem(g_hwndMain, BTN_MODCANCEL), false);
     /* Get game cfg and create list */
     if(!GME_GameUpdList()) {
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_WIZARD), hwndDlg, (DLGPROC)GME_DlgGameAdd);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_WIZARD), hwndDlg, (DLGPROC)GME_DlgGameAdd);
     }
     GME_DlgMainResize();
     return true;
@@ -318,7 +318,7 @@ BOOL CALLBACK GME_DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     case MNU_GAMEADD:
     case BTN_ADDGAME:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_GAME_ADD), hwndDlg, (DLGPROC)GME_DlgGameAdd);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_GAME_ADD), hwndDlg, (DLGPROC)GME_DlgGameAdd);
       return true;
 
     case MNU_MODIMPORT:
@@ -327,7 +327,7 @@ BOOL CALLBACK GME_DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
       return true;
 
     case MNU_MODCREATE:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_MOD_MAKE), hwndDlg, (DLGPROC)GME_DlgModsMake);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_MOD_MAKE), hwndDlg, (DLGPROC)GME_DlgModsMake);
       return true;
 
     case MNU_GAMEREM:
@@ -336,7 +336,7 @@ BOOL CALLBACK GME_DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     case MNU_GAMEEDIT:
     case BTN_EDIGAME:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_GAME_EDIT), hwndDlg, (DLGPROC)GME_DlgGameEdit);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_GAME_EDIT), hwndDlg, (DLGPROC)GME_DlgGameEdit);
       return true;
 
     case MNU_MODENA:
@@ -364,39 +364,39 @@ BOOL CALLBACK GME_DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
       return true;
 
     case MNU_SNAPCREATE:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_SNAP_NEW), hwndDlg, (DLGPROC)GME_DlgSnapNew);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_SNAP_NEW), hwndDlg, (DLGPROC)GME_DlgSnapNew);
       return true;
 
     case MNU_SNAPCOMPARE:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_SNAP_CMP), hwndDlg, (DLGPROC)GME_DlgSnapComp);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_SNAP_CMP), hwndDlg, (DLGPROC)GME_DlgSnapComp);
       return true;
 
     case MNU_PROFILSAVE:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_PROF_NEW), hwndDlg, (DLGPROC)GME_DlgProfNew);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_PROF_NEW), hwndDlg, (DLGPROC)GME_DlgProfNew);
       return true;
 
     case MNU_PROFILDELT:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_PROF_DEL), hwndDlg, (DLGPROC)GME_DlgProfDel);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_PROF_DEL), hwndDlg, (DLGPROC)GME_DlgProfDel);
       return true;
 
     case MNU_REPOSCONFIG:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_REPOS_LST), hwndDlg, (DLGPROC)GME_DlgRepConf);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_REPOS_LST), hwndDlg, (DLGPROC)GME_DlgRepConf);
       return true;
 
     case MNU_REPOSQUERY:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_REPOS_UPD), hwndDlg, (DLGPROC)GME_DlgRepUpd);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_REPOS_UPD), hwndDlg, (DLGPROC)GME_DlgRepUpd);
       return true;
 
     case MNU_REPOSMKXML:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_REPOS_XML), hwndDlg, (DLGPROC)GME_DlgRepXml);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_REPOS_XML), hwndDlg, (DLGPROC)GME_DlgRepXml);
       return true;
 
     case MNU_REPOSTSXML:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_REPOS_XTS), hwndDlg, (DLGPROC)GME_DlgRepXts);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_REPOS_XTS), hwndDlg, (DLGPROC)GME_DlgRepXts);
       return true;
 
     case MNU_ABOUT:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_ABOUT), hwndDlg, (DLGPROC)GME_DlgAbout);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_ABOUT), hwndDlg, (DLGPROC)GME_DlgAbout);
       return true;
 
     case MNU_HELP:
@@ -404,7 +404,7 @@ BOOL CALLBACK GME_DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
       return true;
 
     case MNU_LOGS:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_LOGS), hwndDlg, (DLGPROC)GME_DlgDebug);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_LOGS), hwndDlg, (DLGPROC)GME_DlgDebug);
       return true;
 
     case CMB_GAMELIST:
@@ -422,7 +422,7 @@ BOOL CALLBACK GME_DlgMain(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
       return true;
 
     case POP_MODCREATE:
-      DialogBox(g_hInst, MAKEINTRESOURCE(DLG_MOD_QMAKE), hwndDlg, (DLGPROC)GME_DlgModsQuickMake);
+      DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_MOD_QMAKE), hwndDlg, (DLGPROC)GME_DlgModsQuickMake);
       return true;
 
     case POP_MODDELETE:

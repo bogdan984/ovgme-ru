@@ -211,7 +211,7 @@ void GME_ModsApplyMod(HWND hpb, const std::wstring& name, int type)
     mod_tree = new GMEnode();
     /* create mod tree from zip file */
     if(!GME_TreeBuildFromZip(mod_tree, mods_path + L"\\" + name + L".zip")) {
-      GME_DialogError(g_hwndMain, L"Mod-Archive '" + name + L"' extraction failed, the Mod cannot be installed.");
+      GME_DialogError(g_hwndMain, L"Мод-архив '" + name + L"': ошибка распаковки, мод не может быть установлен.");
       delete mod_tree;
       SendMessage(hpb, PBM_SETPOS, (WPARAM)0, 0);
       GME_Logs(GME_LOG_ERROR, "GME_ModsApplyMod", "Build tree from zip failed", "Aborting");
@@ -312,10 +312,10 @@ void GME_ModsApplyMod(HWND hpb, const std::wstring& name, int type)
         if(!olap_flist.empty()) {
 
           /* create LE message... */
-          olap_msg = L"The Mod '" + name + L"' files overlap with the already installed Mod: '" + GME_FilePathToName(fdw.cFileName) + L"'.";
-          olap_msg += L"\n\nOverlapped file(s):\n";
+          olap_msg = L"Файлы мода '" + name + L"' пересекаются с уже установленным модом: '" + GME_FilePathToName(fdw.cFileName) + L"'.";
+          olap_msg += L"\n\nПересекающиеся файлы:\n";
           for(unsigned k = 0; k < olap_flist.size(); k++) olap_msg += L"  -" + olap_flist[k] + L"\n";
-          olap_msg += L"\nThis will alter already installed Mod files, do you want to install it anyway ?";
+          olap_msg += L"\nЭто изменит файлы уже установленного мода. Всё равно установить?";
 
           GME_Logs(GME_LOG_WARNING, "GME_ModsApplyMod", "Mod overlaps with", GME_StrToMbs(fdw.cFileName).c_str());
 
@@ -354,7 +354,7 @@ void GME_ModsApplyMod(HWND hpb, const std::wstring& name, int type)
         bckentry.action = GME_BCK_RESTORE_SWAP;
         if(!GME_IsDir(dst_path)) {
           if(!GME_DirCreate(dst_path)) {
-            GME_DialogError(g_hwndMain, L"Backup creation error for Mod '" + name + L"', the Mod cannot be installed.");
+            GME_DialogError(g_hwndMain, L"Ошибка создания резервной копии для мода '" + name + L"', мод не может быть установлен.");
             GME_Logs(GME_LOG_ERROR, "GME_ModsApplyMod", "Unable to backup dir", GME_StrToMbs(dst_path).c_str());
             GME_ModsUndoMod(hpb, bckentry_list);
             delete mod_tree;
@@ -373,7 +373,7 @@ void GME_ModsApplyMod(HWND hpb, const std::wstring& name, int type)
         src_path = game_path + rel_path;
         /* copy file, no overwrite dest */
         if(!GME_FileCopy(src_path, dst_path, false)) {
-          GME_DialogError(g_hwndMain, L"Backup creation error for Mod '" + name + L"', the Mod cannot be installed.");
+          GME_DialogError(g_hwndMain, L"Ошибка создания резервной копии для мода '" + name + L"', мод не может быть установлен.");
           GME_Logs(GME_LOG_ERROR, "GME_ModsApplyMod", "Unable to backup file", GME_StrToMbs(src_path).c_str());
           GME_ModsUndoMod(hpb, bckentry_list);
           delete mod_tree;
@@ -420,7 +420,7 @@ void GME_ModsApplyMod(HWND hpb, const std::wstring& name, int type)
   if(is_zip_mod) {
     memset(&za, 0, sizeof(mz_zip_archive));
     if(!mz_zip_reader_init_file(&za, GME_StrToMbs(mods_path + L"\\" + name + L".zip").c_str(), 0)) {
-      GME_DialogError(g_hwndMain, L"Mod-Archive '" + name + L"' Zip extraction error, the Mod cannot be installed.");
+      GME_DialogError(g_hwndMain, L"Мод-архив '" + name + L"': ошибка распаковки Zip, мод не может быть установлен.");
       GME_Logs(GME_LOG_ERROR, "GME_ModsApplyMod", "Zip reader init (extraction) failed", GME_StrToMbs(name).c_str());
       delete mod_tree;
       SendMessage(hpb, PBM_SETPOS, (WPARAM)0, 0);
@@ -439,7 +439,7 @@ void GME_ModsApplyMod(HWND hpb, const std::wstring& name, int type)
       if(!GME_IsDir(dst_path)) {
         if(!GME_DirCreate(dst_path)) {
           if(is_zip_mod) mz_zip_reader_end(&za);
-          GME_DialogError(g_hwndMain, L"Create directory error for Mod '" + name + L"', the Mod cannot be installed.");
+          GME_DialogError(g_hwndMain, L"Ошибка создания папки для мода '" + name + L"', мод не может быть установлен.");
           GME_Logs(GME_LOG_ERROR, "GME_ModsApplyMod", "Unable to create dir", GME_StrToMbs(dst_path).c_str());
           delete mod_tree;
           SendMessage(hpb, PBM_SETPOS, (WPARAM)0, 0);
@@ -455,7 +455,7 @@ void GME_ModsApplyMod(HWND hpb, const std::wstring& name, int type)
         /* extract to file */
         if(!mz_zip_reader_extract_to_file(&za, mod_tree->currChild()->getId(), GME_StrToMbs(dst_path).c_str(), 0)) {
           mz_zip_reader_end(&za);
-          GME_DialogError(g_hwndMain, L"Mod-Archive '" + name + L"' Zip extraction error, the Mod cannot be installed.");
+          GME_DialogError(g_hwndMain, L"Мод-архив '" + name + L"': ошибка распаковки Zip, мод не может быть установлен.");
           GME_Logs(GME_LOG_ERROR, "GME_ModsApplyMod", "Zip extract to file (extraction) failed", GME_StrToMbs(mod_tree->currChild()->getPath(true)).c_str());
           delete mod_tree;
           SendMessage(hpb, PBM_SETPOS, (WPARAM)0, 0);
@@ -468,7 +468,7 @@ void GME_ModsApplyMod(HWND hpb, const std::wstring& name, int type)
         /* copy with overwrite */
         if(!GME_FileCopy(mod_tree->currChild()->getSource(), dst_path, true)) {
           mz_zip_reader_end(&za);
-          GME_DialogError(g_hwndMain, L"File copy error for Mod '" + name + L"', the Mod cannot be installed.");
+          GME_DialogError(g_hwndMain, L"Ошибка копирования файла для мода '" + name + L"', мод не может быть установлен.");
           GME_Logs(GME_LOG_ERROR, "GME_ModsApplyMod", "File copy failed", GME_StrToMbs(mod_tree->currChild()->getSource()).c_str());
           delete mod_tree;
           SendMessage(hpb, PBM_SETPOS, (WPARAM)0, 0);
@@ -598,7 +598,7 @@ void GME_ModsRestoreMod(HWND hpb, const std::wstring& name)
   SendMessage(hpb, PBM_SETPOS, (WPARAM)0, 0);
 
   if(got_error) {
-    GME_DialogWarning(g_hwndMain, L"Restore process for Mod '" + name + L"' encountered one or more error, please see log text for more details.");
+    GME_DialogWarning(g_hwndMain, L"При восстановлении мода '" + name + L"' произошла одна или несколько ошибок, подробности смотрите в журнале.");
   }
 }
 
@@ -717,7 +717,7 @@ void GME_ModsCleanBackup()
 bool GME_ModsToggleSel(int action)
 {
   if(!GME_ModsProc_IsReady()) {
-    GME_DialogWarning(g_hwndMain, L"Mod(s) installation is currently processing, please wait until current process finish before enabling or disabling mod(s).");
+    GME_DialogWarning(g_hwndMain, L"Идёт установка модов. Дождитесь завершения текущего процесса, прежде чем включать или отключать моды.");
     return false;
   }
 
@@ -782,7 +782,7 @@ bool GME_ModsToggleSel(int action)
 bool GME_ModsToggleAll(int action)
 {
   if(!GME_ModsProc_IsReady()) {
-    GME_DialogWarning(g_hwndMain, L"Mod(s) installation is currently processing, please wait until current process finish before enabling or disabling Mod(s).");
+    GME_DialogWarning(g_hwndMain, L"Идёт установка модов. Дождитесь завершения текущего процесса, прежде чем включать или отключать моды.");
     return false;
   }
 
@@ -846,7 +846,7 @@ bool GME_ModsImport()
   wchar_t flist[2048];
   unsigned path_offset;
 
-  if(!GME_DialogFileOpen(g_hwndMain, flist, sizeof(flist), &path_offset, L"Mod-Archive (*.zip)\0*.ZIP;\0", L"")) {
+  if(!GME_DialogFileOpen(g_hwndMain, flist, sizeof(flist), &path_offset, L"Мод-архив (*.zip)\0*.ZIP;\0", L"")) {
     return false;
   }
 
@@ -887,7 +887,7 @@ bool GME_ModsImport()
         GME_Logs(GME_LOG_ERROR, "GME_ModsImport", "Unable to copy file ", GME_StrToMbs(dst).c_str());
       }
     } else {
-      GME_DialogWarning(g_hwndMain, L"The file '" + fmod_list[i] + L"' is not a valid Mod-Archive and will not be imported.");
+      GME_DialogWarning(g_hwndMain, L"Файл '" + fmod_list[i] + L"' не является корректным мод-архивом и не будет импортирован.");
     }
   }
 
@@ -948,12 +948,12 @@ bool GME_ModsChkDesc()
     }
 
     if(content.empty())
-      content = L"No description available.";
+      content = L"Описание отсутствует.";
 
     SendMessageW(het, WM_SETTEXT, 0, (LPARAM)content.c_str());
 
   } else {
-    SendMessageW(het, WM_SETTEXT, 0, (LPARAM)L"[Multiple selection]");
+    SendMessageW(het, WM_SETTEXT, 0, (LPARAM)L"[Выбрано несколько]");
   }
 
   return true;
@@ -1055,18 +1055,18 @@ void GME_ModsDeleteCur()
     switch(type_list[i])
     {
     case 0:
-      if(IDYES == GME_DialogWarningConfirm(g_hwndMain, L"Are you sure you want to move the Mod '" + name_list[i] + L"' to Recycle Bin ?")){
+      if(IDYES == GME_DialogWarningConfirm(g_hwndMain, L"Вы действительно хотите переместить мод '" + name_list[i] + L"' в корзину?")){
         GME_DirRemToTrash(mod_path);
       }
       break;
     case 1:
-      if(IDYES == GME_DialogWarningConfirm(g_hwndMain, L"Are you sure you want to move the Mod '" + name_list[i] + L"' to Recycle Bin ?")){
+      if(IDYES == GME_DialogWarningConfirm(g_hwndMain, L"Вы действительно хотите переместить мод '" + name_list[i] + L"' в корзину?")){
         mod_path += L".zip";
         GME_DirRemToTrash(mod_path);
       }
       break;
     case 2:
-      GME_DialogWarning(g_hwndMain, L"Please disable the Mod before...");
+      GME_DialogWarning(g_hwndMain, L"Сначала отключите мод...");
       break;
     }
   }
@@ -1147,7 +1147,7 @@ bool GME_ModsUpdList()
 
   /* check if mods dir exists in game root */
   if(!GME_IsDir(GME_GameGetCurModsPath())) {
-    GME_DialogWarning(g_hwndMain, L"The Mods stock folder '" + GME_GameGetCurModsPath() + L"' does not exists, you should create it.");
+    GME_DialogWarning(g_hwndMain, L"Папка хранения модов '" + GME_GameGetCurModsPath() + L"' не существует, её нужно создать.");
   }
 
   std::wstring conf_path = GME_GameGetCurConfPath();
@@ -1251,7 +1251,7 @@ bool GME_ModsUpdList()
         wcscpy(wbuff, L"0.0.0");
       }
     } else {
-      wcscpy(wbuff, L"n/a");
+      wcscpy(wbuff, L"н/д");
     }
     lvitm.pszText = wbuff;
     SendMessageW(hlv, LVM_SETITEMW, 0, (LPARAM)&lvitm);
@@ -1277,7 +1277,7 @@ DWORD WINAPI GME_ModsUninstall_Th(void* args)
 {
   GME_Logs(3, "GME_ModsUninstall_Th", "Uninstall thread Start", GME_StrToMbs(GME_GameGetCurTitle()).c_str());
 
-  std::wstring status = L"restoring backups for config '" + GME_GameGetCurTitle() + L"'...";
+  std::wstring status = L"восстановление резервных копий для конфигурации '" + GME_GameGetCurTitle() + L"'...";
   SetDlgItemTextW(g_hwndUninst, TXT_UNINST_GAME, status.c_str());
 
   /* get .bck file list */
@@ -1297,7 +1297,7 @@ DWORD WINAPI GME_ModsUninstall_Th(void* args)
 
   /* restore all backups for this game */
   for(unsigned m = 0; m < back_list.size(); m++) {
-    status = L"restore backup of '" + back_list[m] + L"'...";
+    status = L"восстановление резервной копии '" + back_list[m] + L"'...";
     SetDlgItemTextW(g_hwndUninst, TXT_UNINST_MOD, status.c_str());
     GME_ModsRestoreMod(GetDlgItem(g_hwndUninst, PBM_UNINST), back_list[m]);
   }
@@ -1333,7 +1333,7 @@ BOOL CALLBACK GME_DlgUninst(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 */
 void GME_ModsUninstall()
 {
-  DialogBox(g_hInst, MAKEINTRESOURCE(DLG_UNINSTALL), g_hwndMain, (DLGPROC)GME_DlgUninst);
+  DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_UNINSTALL), g_hwndMain, (DLGPROC)GME_DlgUninst);
 }
 
 
@@ -1383,7 +1383,7 @@ DWORD WINAPI GME_ModsMake_Th(void* args)
     delete zip_root;
     delete arg;
     GME_Logs(GME_LOG_ERROR, "GME_ModsMake_Th", "mz_zip_writer_init_file failed", GME_StrToMbs(tmp_path).c_str());
-    GME_DialogError(g_hwndNewAMod, L"An error occurred during Mod-Archive creation.");
+    GME_DialogError(g_hwndNewAMod, L"Произошла ошибка при создании мод-архива.");
     ShowWindow(GetDlgItem(g_hwndNewAMod, BTN_CREATE), true);
     ShowWindow(GetDlgItem(g_hwndNewAMod, IDCANCEL), false);
     EnableWindow(GetDlgItem(g_hwndNewAMod, BTN_CLOSE), true);
@@ -1414,7 +1414,7 @@ DWORD WINAPI GME_ModsMake_Th(void* args)
         delete arg;
         GME_FileDelete(tmp_path);
         GME_Logs(GME_LOG_ERROR, "GME_ModsMake_Th", "mz_zip_writer_add_mem (dir) failed", GME_StrToMbs(tmp_path).c_str());
-        GME_DialogError(g_hwndNewAMod, L"An error occurred during Mod-Archive creation.");
+        GME_DialogError(g_hwndNewAMod, L"Произошла ошибка при создании мод-архива.");
         ShowWindow(GetDlgItem(g_hwndNewAMod, BTN_CREATE), true);
         ShowWindow(GetDlgItem(g_hwndNewAMod, IDCANCEL), false);
         EnableWindow(GetDlgItem(g_hwndNewAMod, BTN_CLOSE), true);
@@ -1431,7 +1431,7 @@ DWORD WINAPI GME_ModsMake_Th(void* args)
           delete arg;
           GME_FileDelete(tmp_path);
           GME_Logs(GME_LOG_ERROR, "GME_ModsMake_Th", "mz_zip_writer_add_file failed", GME_StrToMbs(tmp_path).c_str());
-          GME_DialogError(g_hwndNewAMod, L"An error occurred during Mod-Archive creation.");
+          GME_DialogError(g_hwndNewAMod, L"Произошла ошибка при создании мод-архива.");
           ShowWindow(GetDlgItem(g_hwndNewAMod, BTN_CREATE), true);
           ShowWindow(GetDlgItem(g_hwndNewAMod, IDCANCEL), false);
           EnableWindow(GetDlgItem(g_hwndNewAMod, BTN_CLOSE), true);
@@ -1445,7 +1445,7 @@ DWORD WINAPI GME_ModsMake_Th(void* args)
           delete arg;
           GME_FileDelete(tmp_path);
           GME_Logs(GME_LOG_ERROR, "GME_ModsMake_Th", "mz_zip_writer_add_mem (mem) failed", GME_StrToMbs(tmp_path).c_str());
-          GME_DialogError(g_hwndNewAMod, L"An error occurred during Mod-Archive creation.");
+          GME_DialogError(g_hwndNewAMod, L"Произошла ошибка при создании мод-архива.");
           ShowWindow(GetDlgItem(g_hwndNewAMod, BTN_CREATE), true);
           ShowWindow(GetDlgItem(g_hwndNewAMod, IDCANCEL), false);
           EnableWindow(GetDlgItem(g_hwndNewAMod, BTN_CLOSE), true);
@@ -1490,7 +1490,7 @@ DWORD WINAPI GME_ModsMake_Th(void* args)
   if(!GME_FileMove(tmp_path, zip_path, true)) {
     GME_FileDelete(tmp_path);
     GME_Logs(GME_LOG_ERROR, "GME_ModsMake_Th", "Unable to rename file", GME_StrToMbs(zip_path).c_str());
-    GME_DialogError(g_hwndNewAMod, L"An error occurred during Mod-Archive creation.");
+    GME_DialogError(g_hwndNewAMod, L"Произошла ошибка при создании мод-архива.");
     ShowWindow(GetDlgItem(g_hwndNewAMod, BTN_CREATE), true);
     ShowWindow(GetDlgItem(g_hwndNewAMod, IDCANCEL), false);
     EnableWindow(GetDlgItem(g_hwndNewAMod, BTN_CLOSE), true);
@@ -1500,7 +1500,7 @@ DWORD WINAPI GME_ModsMake_Th(void* args)
 
   SendMessage(hpb, PBM_SETPOS, (WPARAM)0, 0);
 
-  GME_DialogInfo(g_hwndNewAMod, L"The Mod-Archive '" + zip_path + L".zip' was successfully created.");
+  GME_DialogInfo(g_hwndNewAMod, L"Мод-архив '" + zip_path + L".zip' успешно создан.");
 
   /* just update the mod list now... */
   GME_ModsUpdList();
@@ -1551,17 +1551,17 @@ void GME_ModsMakeCancel()
 void GME_ModsMakeArchive(const std::wstring& src_dir, const std::wstring& dst_path, const std::wstring& desc, int vmaj, int vmin, int vrev, int zlevel)
 {
   if(g_ModsMake_Running) {
-    GME_DialogWarning(g_hwndNewAMod, L"Make Mod-Archive process already running, please wait.");
+    GME_DialogWarning(g_hwndNewAMod, L"Создание мод-архива уже выполняется, подождите.");
     return;
   }
 
   if(!GME_IsDir(dst_path)) {
-    GME_DialogWarning(g_hwndNewAMod, L"Invalid destination path.");
+    GME_DialogWarning(g_hwndNewAMod, L"Недопустимый путь назначения.");
     return;
   }
 
   if(!GME_IsDir(src_dir)) {
-    GME_DialogWarning(g_hwndNewAMod, L"Invalid source Directory-Mod path.");
+    GME_DialogWarning(g_hwndNewAMod, L"Недопустимый путь к исходной мод-папке.");
     return;
   }
 
@@ -1580,7 +1580,7 @@ void GME_ModsMakeArchive(const std::wstring& src_dir, const std::wstring& dst_pa
 
   if(GME_IsFile(zip_path)) {
     if(IDYES != GME_DialogQuestionConfirm(g_hwndNewAMod,
-          L"The destination file '" + zip_path + L"' already exists, do you want to overwrite ?")) {
+          L"Файл назначения '" + zip_path + L"' уже существует. Перезаписать?")) {
       return;
     }
   }
@@ -1655,7 +1655,7 @@ void GME_ModsMakeArchiveCur(const std::wstring& desc, int vmaj, int vmin, int vr
   }
 
   if(!found) {
-    GME_DialogWarning(g_hwndMain, L"No Mod selected.");
+    GME_DialogWarning(g_hwndMain, L"Мод не выбран.");
     return;
   }
 
@@ -1663,7 +1663,7 @@ void GME_ModsMakeArchiveCur(const std::wstring& desc, int vmaj, int vmin, int vr
   std::wstring dst_path = GME_GameGetCurModsPath();
 
   if(!GME_IsDir(src_dir)) {
-    GME_DialogWarning(g_hwndMain, L"Mod '" + name + L"' is not a Directory-Mod.");
+    GME_DialogWarning(g_hwndMain, L"Мод '" + name + L"' не является мод-папкой.");
     return;
   }
 
@@ -1681,7 +1681,7 @@ void GME_ModsMakeArchiveCur(const std::wstring& desc, int vmaj, int vmin, int vr
 
 
   if(GME_IsFile(zip_path)) {
-    if(IDYES != GME_DialogQuestionConfirm(g_hwndNewAMod, L"The destination file '" + zip_path + L"' already exists, do you want to overwrite ?")) {
+    if(IDYES != GME_DialogQuestionConfirm(g_hwndNewAMod, L"Файл назначения '" + zip_path + L"' уже существует. Перезаписать?")) {
       return;
     }
   }
@@ -1856,7 +1856,7 @@ void GME_ModsProc_Launch()
     g_ModsProc_Cancel = false;
     g_ModsProc_hT = CreateThread(NULL,0,GME_ModsProc_Th,NULL,0,&g_ModsProc_iT);
   } else {
-    GME_DialogWarning(g_hwndMain, L"Mod(s) installation is currently processing, please wait until current process finish before enabling or disabling Mod(s).");
+    GME_DialogWarning(g_hwndMain, L"Идёт установка модов. Дождитесь завершения текущего процесса, прежде чем включать или отключать моды.");
   }
 }
 

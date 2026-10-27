@@ -1,0 +1,91 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+  <title>Мод-архив</title>
+
+  <meta name="keywords"  content="моды,структура,мод-архив,zip," ></head>
+
+  <body style="font-family:arial; font-size:10pt;">
+    <table bgcolor="#000" border="0" width="100%">
+      <tbody>
+        <tr>
+          <td style="color:#fff; font-size:14pt;">
+            <b>Мод-архив</b>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+Мод-архив — это, по сути, упакованная в zip корректная мод-папка. Однако OvGME нужно
+правильно сопоставить дерево файлов мода с деревом корневой папки и понять, где искать
+данные, поэтому корректный мод-архив должен соответствовать нескольким простым правилам.
+Если они не соблюдены, zip-файл не будет распознан как мод-архив.<br>
+<br>
+<ul>
+<li>
+  <b>Файл <u>ДОЛЖЕН</u> быть сжат в формате ZIP.</b><br>
+  Сейчас OvGME поддерживает только архивы стандартного формата ZIP.<br><br>
+</li>
+<li>
+  <b>В корне zip-файла <u>ДОЛЖНА</u> быть правильно названная папка-контейнер.</b><br>
+  В корне архива должна лежать папка-контейнер (а <b>не</b> сами файлы мода). Кроме того,
+  эта папка должна называться так же, как сам архив, но без расширения .zip. Например,
+  если архив называется «<i>My Super Mod.zip</i>», в нём должна быть папка-контейнер
+  «<i>My Super Mod</i>» с файлами мода. OvGME не может угадать, какую папку архива считать
+  корневой, а мод-архив может содержать и другие файлы помимо изменённых файлов корневой
+  папки, поэтому OvGME ищет папку с именем, точно совпадающим с именем zip-файла.
+  Таково соглашение.<br><br>
+</li>
+<li>
+  <b>Zip-файл может содержать файл описания.</b><br>
+  OvGME автоматически проверяет, есть ли в корне zip-файла правильно названный .txt-файл.
+  Если он называется «description.txt», «readme.txt» или точно так же, как корневая папка
+  мода или сам zip-файл (но с расширением .txt вместо .zip), он используется как описание
+  мода. Это должен быть обычный текстовый файл ASCII: форматированный текст OvGME пока
+  не поддерживает.<br><br>
+</li>
+<li>
+  <b>Zip-файл может содержать файл версии.</b><br>
+  OvGME автоматически проверяет, есть ли в корне zip-файла файл «version.txt». Если он
+  есть, его содержимое считается строкой версии мода. Это должен быть обычный текстовый
+  файл ASCII, а строка версии должна соответствовать формату из раздела «Версии модов».<br><br>
+</li>
+</ul>
+Например, если дерево файлов корневой папки такое:<br>
+<br>
+<blockquote>
+<span style="font-family:Courier;">
+&#x1f4c1; MyGame<br>
+&emsp;&emsp; &#x1f4c1; Textures<br>
+&emsp;&emsp;&emsp;&emsp; &#x1f4c1; Landscape<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &#x1f4c4; picture1.dds<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &#x1f4c4; picture2.dds<br>
+&emsp;&emsp;&emsp;&emsp; &#x1f4c1; Vehicles<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &#x1f4c4; picture1.dds<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &#x1f4c4; picture2.dds<br>
+</span>
+</blockquote>
+и мод заменяет несколько текстур .dds в «<i>MyGame\Textures\Vehicles</i>», то zip-файл
+мод-архива должен быть устроен так:
+<blockquote>
+<span style="font-family:Courier;">
+&#x1f4c2; My Texture Mod.zip<br>
+{<br>
+&emsp;&emsp; &#x1f4c4; README.txt <i>(необязательно)</i><br>
+&emsp;&emsp; &#x1f4c4; VERSION.txt <i>(необязательно)</i><br>
+&emsp;&emsp; &#x1f4c1; My Texture Mod<br>
+&emsp;&emsp;&emsp;&emsp; &#x1f4c1; Textures<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &#x1f4c1; Vehicles<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &#x1f4c4; picture1.dds<br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &#x1f4c4; picture2.dds<br>
+}
+</span>
+</blockquote>
+Затем файл «<i>My Texture Mod.zip</i>» нужно скопировать в папку с модами этой
+конфигурации или импортировать с помощью функции импорта.<br>
+<br>
+<i>Примечание: для создания мод-архива можно воспользоваться инструментом OvGME — он
+сам создаст zip-файл с правильной структурой из существующей мод-папки (см. раздел
+<a href="modsmake.html">Создание модов</a>).</i>
+  </body>
+</html>

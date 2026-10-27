@@ -30,5 +30,5 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char* argv, i
   }
 
   /* main dialog window */
-  return DialogBox(g_hInst, MAKEINTRESOURCE(DLG_MAIN), NULL, (DLGPROC)GME_DlgMain);
+  return DialogBoxW(g_hInst, MAKEINTRESOURCEW(DLG_MAIN), NULL, (DLGPROC)GME_DlgMain);
 }

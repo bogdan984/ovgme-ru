@@ -196,41 +196,41 @@ bool GME_GameNewCfg(const std::wstring& title, const std::wstring& root, const s
 
   /* check if game cfg already exists */
   if(GME_IsDir(conf_path)) {
-    GME_DialogWarning(g_hwndAddGame, L"Config for '" + root + L"' already exists.");
+    GME_DialogWarning(g_hwndAddGame, L"Конфигурация для '" + root + L"' уже существует.");
     return false;
   }
 
   /* check if game title already exists */
   for(unsigned i = 0; i < g_GameCfg_List.size(); i++) {
     if(title == g_GameCfg_List[i].title) {
-      GME_DialogWarning(g_hwndAddGame, L"Config title '" + title + L"' already exists.");
+      GME_DialogWarning(g_hwndAddGame, L"Конфигурация с названием '" + title + L"' уже существует.");
       return false;
     }
   }
 
   /* check if game folder exists */
   if(!GME_IsDir(root)) {
-    GME_DialogWarning(g_hwndAddGame, L"The root path '" + root + L"' is invalid.");
+    GME_DialogWarning(g_hwndAddGame, L"Корневой путь '" + root + L"' недопустим.");
     return false;
   }
 
   /* check if mods folder exists */
   if(!GME_IsDir(mods)) {
-    GME_DialogWarning(g_hwndAddGame, L"Mods stock folder path '" + mods + L"' is invalid.");
+    GME_DialogWarning(g_hwndAddGame, L"Путь к папке хранения модов '" + mods + L"' недопустим.");
     return false;
   }
 
   if(use_custom_back) {
     /* check if custom backup path is valid */
     if(!GME_IsDir(backp)) {
-      GME_DialogWarning(g_hwndAddGame, L"Backup folder path '" + backp + L"' is invalid.");
+      GME_DialogWarning(g_hwndAddGame, L"Путь к папке резервных копий '" + backp + L"' недопустим.");
       return false;
     }
     /* check if custom backup path is already used by another game config */
     for(int i = 0; i < g_GameCfg_List.size(); i++) {
       if(i != g_GameCur_Id) {
         if(!wcscmp(backp.c_str(), g_GameCfg_List[i].back_dir)) {
-          if(IDYES != GME_DialogWarningConfirm(g_hwndEdiGame, L"The backup folder path\n'" + backp + L"'\nis already used by the config '" + g_GameCfg_List[i].title + L"'.\n\nUsing same backup folder for two configurations is NOT a good idea, do you really want to continue ?")) {
+          if(IDYES != GME_DialogWarningConfirm(g_hwndEdiGame, L"Папка резервных копий\n'" + backp + L"'\nуже используется конфигурацией '" + g_GameCfg_List[i].title + L"'.\n\nИспользовать одну папку резервных копий для двух конфигураций — ОЧЕНЬ плохая идея. Всё равно продолжить?")) {
             return false;
           }
         }
@@ -270,19 +270,19 @@ bool GME_GameNewCfg(const std::wstring& title, const std::wstring& root, const s
   if(!GME_IsDir(conf_path)) {
     /* create game config dir */
     if(!GME_DirCreate(conf_path)) {
-      GME_DialogError(g_hwndAddGame, L"Unable to create configuration folder.");
+      GME_DialogError(g_hwndAddGame, L"Не удалось создать папку конфигурации.");
       GME_Logs(GME_LOG_ERROR, "GME_GameNewCfg", "Unable to create config folder", GME_StrToMbs(conf_path).c_str());
       return false;
     }
     /* write config file */
     if(!GME_GameWritCfg(conf_path, &data)) {
-      GME_DialogError(g_hwndAddGame, L"Unable to write configuration file.");
+      GME_DialogError(g_hwndAddGame, L"Не удалось записать файл конфигурации.");
       GME_Logs(GME_LOG_ERROR, "GME_GameNewCfg", "Unable to write config file", GME_StrToMbs(conf_path).c_str());
       return false;
     }
     /* create backups dir */
     if(!GME_DirCreate(std::wstring(conf_path + L"\\backups"))) {
-      GME_DialogError(g_hwndAddGame, L"Unable to create backup folder.");
+      GME_DialogError(g_hwndAddGame, L"Не удалось создать папку резервных копий.");
       GME_Logs(GME_LOG_ERROR, "GME_GameNewCfg", "Unable to create backup subfolder", GME_StrToMbs(conf_path).c_str());
       return false;
     }
@@ -305,7 +305,7 @@ bool GME_GameRemCurCfg()
   GME_Logs(GME_LOG_NOTICE, "GME_GameRemCurCfg", "Delete current config", GME_StrToMbs(GME_GameGetCurTitle()).c_str());
 
   /* confirmation dialog */
-  if(IDYES != GME_DialogWarningConfirm(g_hwndMain, L"Are you sure you want to remove config '" + GME_GameGetCurTitle() + L"' from management list ?")) {
+  if(IDYES != GME_DialogWarningConfirm(g_hwndMain, L"Вы действительно хотите убрать конфигурацию '" + GME_GameGetCurTitle() + L"' из списка управления?")) {
     return false;
   }
 
@@ -323,7 +323,7 @@ bool GME_GameRemCurCfg()
 
   /* update game list */
   if(!GME_GameUpdList()) {
-    GME_DialogInfo(g_hwndMain, L"The configuration list is empty.");
+    GME_DialogInfo(g_hwndMain, L"Список конфигураций пуст.");
   }
 
   /* remove game config directory and return */
@@ -342,7 +342,7 @@ bool GME_GameEditCurCfg(const std::wstring& title, const std::wstring& mods, boo
   for(int i = 0; i < (int)g_GameCfg_List.size(); i++) {
     if(i != g_GameCur_Id) {
       if(title == g_GameCfg_List[i].title) {
-        GME_DialogWarning(g_hwndEdiGame, L"Config title '" + title + L"' already exists.");
+        GME_DialogWarning(g_hwndEdiGame, L"Конфигурация с названием '" + title + L"' уже существует.");
         return false;
       }
     }
@@ -350,14 +350,14 @@ bool GME_GameEditCurCfg(const std::wstring& title, const std::wstring& mods, boo
 
   /* check if mods folder is a valid name */
   if(!GME_IsDir(mods)) {
-    GME_DialogWarning(g_hwndEdiGame, L"Mods stock folder path '" + mods + L"' is invalid.");
+    GME_DialogWarning(g_hwndEdiGame, L"Путь к папке хранения модов '" + mods + L"' недопустим.");
     return false;
   }
 
   if(use_custom_back) {
     /* check if custom backup path is valid */
     if(!GME_IsDir(backp)) {
-      GME_DialogWarning(g_hwndEdiGame, L"Backup folder path '" + backp + L"' is invalid.");
+      GME_DialogWarning(g_hwndEdiGame, L"Путь к папке резервных копий '" + backp + L"' недопустим.");
       return false;
     }
 
@@ -365,7 +365,7 @@ bool GME_GameEditCurCfg(const std::wstring& title, const std::wstring& mods, boo
     for(int i = 0; i < g_GameCfg_List.size(); i++) {
       if(i != g_GameCur_Id) {
         if(!wcscmp(backp.c_str(), g_GameCfg_List[i].back_dir)) {
-          if(IDYES != GME_DialogWarningConfirm(g_hwndEdiGame, L"The backup folder path\n'" + backp + L"'\nis already used by the config '" + g_GameCfg_List[i].title + L"'.\n\nUsing same backup folder for two configurations is NOT a good idea, do you really want to continue ?")) {
+          if(IDYES != GME_DialogWarningConfirm(g_hwndEdiGame, L"Папка резервных копий\n'" + backp + L"'\nуже используется конфигурацией '" + g_GameCfg_List[i].title + L"'.\n\nИспользовать одну папку резервных копий для двух конфигураций — ОЧЕНЬ плохая идея. Всё равно продолжить?")) {
             return false;
           }
         }
@@ -404,14 +404,14 @@ bool GME_GameEditCurCfg(const std::wstring& title, const std::wstring& mods, boo
 
   /* if the backup path changed, we restore all backup */
   if(GME_GameGetCurBackPath() != data.back_dir) {
-    GME_DialogWarning(g_hwndEdiGame, L"Backup folder changed for  '" + GME_GameGetCurTitle() + L"', all enabled Mod(s) will be disabled to empty old backup folder.");
+    GME_DialogWarning(g_hwndEdiGame, L"Папка резервных копий изменена для '" + GME_GameGetCurTitle() + L"', все включённые моды будут отключены, чтобы очистить старую папку резервных копий.");
     /* uninstall process */
     GME_ModsUninstall();
   }
 
   /* write config file */
   if(!GME_GameWritCfg(conf_path, &data)) {
-    GME_DialogError(g_hwndEdiGame, L"Unable to write configuration file.");
+    GME_DialogError(g_hwndEdiGame, L"Не удалось записать файл конфигурации.");
     GME_Logs(GME_LOG_ERROR, "GME_GameEditCurCfg", "Unable to write config file", GME_StrToMbs(conf_path).c_str());
     return true;
   }
@@ -451,7 +451,7 @@ bool GME_GameSelectCfg(const std::wstring& title)
   if(g_GameCfg_List.empty()) {
     /* update mods list */
     GME_ModsUpdList();
-    GME_DialogWarning(g_hwndMain, L"The configuration list is empty.");
+    GME_DialogWarning(g_hwndMain, L"Список конфигураций пуст.");
     GME_Logs(GME_LOG_WARNING, "GME_GameSelectCfg", "Empty config list", "Nothing to select");
     return false;
   }

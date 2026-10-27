@@ -101,7 +101,7 @@ void GME_ProfUpdMenu()
     }
     EnableMenuItem(g_hmnuMain, MNU_PROFILDELT, MF_BYCOMMAND);
   } else {
-    AppendMenuW(g_hmnuSubProf, MF_STRING, 40100, L"No profile available");
+    AppendMenuW(g_hmnuSubProf, MF_STRING, 40100, L"Нет доступных профилей");
     EnableMenuItem(g_hmnuMain, 40100, MF_GRAYED);
     EnableMenuItem(g_hmnuMain, MNU_PROFILDELT, MF_GRAYED);
   }
@@ -140,7 +140,7 @@ bool GME_ProfDelete()
   }
 
   if(prof_id < 0) {
-    GME_DialogWarning(g_hwndProfDel, L"The profile '" + prfl_name + L"' do not exist.");
+    GME_DialogWarning(g_hwndProfDel, L"Профиль '" + prfl_name + L"' не существует.");
     GME_Logs(GME_LOG_ERROR, "GME_ProfDelete", "Cannot delete non existing profile", GME_StrToMbs(prfl_name).c_str());
     return false;
   }
@@ -148,16 +148,16 @@ bool GME_ProfDelete()
   std::wstring prfl_file = g_GME_Profile_List[prof_id].path;
 
   if(GME_IsFile(prfl_file)) {
-    if(IDYES != GME_DialogQuestionConfirm(g_hwndProfDel, L"Do you want to delete the profile '" + prfl_name + L"' ?"))
+    if(IDYES != GME_DialogQuestionConfirm(g_hwndProfDel, L"Удалить профиль '" + prfl_name + L"'?"))
       return false;
   } else {
-    GME_DialogWarning(g_hwndProfDel, L"The profile '" + prfl_name + L"' data file do not exist.");
+    GME_DialogWarning(g_hwndProfDel, L"Профиль '" + prfl_name + L"': файл данных не существует.");
     GME_Logs(GME_LOG_ERROR, "GME_ProfDelete", "Cannot delete non existing profile file", GME_StrToMbs(prfl_file).c_str());
     return false;
   }
 
   if(!GME_FileDelete(prfl_file)) {
-    GME_DialogWarning(g_hwndProfDel, L"Unable to delete profile data '" + prfl_file + L"'.");
+    GME_DialogWarning(g_hwndProfDel, L"Не удалось удалить данные профиля '" + prfl_file + L"'.");
     GME_Logs(GME_LOG_ERROR, "GME_ProfDelete", "Unable to delete profile file", GME_StrToMbs(prfl_file).c_str());
   }
 
@@ -172,7 +172,7 @@ bool GME_ProfCreate(const wchar_t* name)
   std::wstring prfl_file = GME_GameGetCurConfPath() + L"\\" + prfl_name + L".prf";
 
   if(GME_IsFile(prfl_file)) {
-    if(IDYES != GME_DialogWarningConfirm(g_hwndProfNew, L"Mods profile '" + prfl_name + L"' already exists for this game, do you want to overwrite it ?"))
+    if(IDYES != GME_DialogWarningConfirm(g_hwndProfNew, L"Профиль модов '" + prfl_name + L"' уже существует для этой игры. Перезаписать?"))
       return false;
   }
 
@@ -246,7 +246,7 @@ bool GME_ProfCreate(const wchar_t* name)
 bool GME_ProfApply(unsigned mid)
 {
   if(!GME_ModsProc_IsReady()) {
-    GME_DialogWarning(g_hwndMain, L"Mod(s) installation is currently processing, please wait until current process finish before enabling or disabling Mod(s).");
+    GME_DialogWarning(g_hwndMain, L"Идёт установка модов. Дождитесь завершения текущего процесса, прежде чем включать или отключать моды.");
     return false;
   }
 
@@ -260,7 +260,7 @@ bool GME_ProfApply(unsigned mid)
   }
 
   if(!GME_IsFile(prf_path)) {
-    GME_DialogWarning(g_hwndMain, L"Unable to open profile data file '" + prf_path + L"'");
+    GME_DialogWarning(g_hwndMain, L"Не удалось открыть файл данных профиля '" + prf_path + L"'");
     return false;
   }
 
@@ -315,7 +315,7 @@ bool GME_ProfApply(unsigned mid)
   GME_ModsProc_Launch();
 
   if(!missing_list.empty()) {
-    std::wstring message = L"One or more mod registered in profile was not found:\n\n";
+    std::wstring message = L"Один или несколько модов из профиля не найдены:\n\n";
     for(unsigned i = 0; i < missing_list.size(); i++) {
       message += L"  " + missing_list[i] + L"\n";
     }

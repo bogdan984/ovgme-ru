@@ -194,8 +194,8 @@ void GME_DlgRepUpdResize()
   SetWindowPos(GetDlgItem(hwd, BTN_CLOSE), NULL, cli.right-90, cli.bottom-30, 80, 24, SWP_NOZORDER);
   SetWindowPos(GetDlgItem(hwd, BOX_MAIN), NULL, 10, 80, cli.right-20, cli.bottom-120, SWP_NOZORDER);
   SetWindowPos(GetDlgItem(hwd, ENT_MODDESC), NULL, 20, cli.bottom-160, cli.right-40, 110, SWP_NOZORDER);
-  SetWindowPos(GetDlgItem(hwd, BTN_REPOUPDSEL), NULL, 20, cli.bottom-190, 100, 22, SWP_NOZORDER);
-  SetWindowPos(GetDlgItem(hwd, BTN_REPOUPDALL), NULL, 125, cli.bottom-190, 100, 22, SWP_NOZORDER);
+  SetWindowPos(GetDlgItem(hwd, BTN_REPOUPDSEL), NULL, 20, cli.bottom-190, 130, 22, SWP_NOZORDER);
+  SetWindowPos(GetDlgItem(hwd, BTN_REPOUPDALL), NULL, 155, cli.bottom-190, 130, 22, SWP_NOZORDER);
   SetWindowPos(GetDlgItem(hwd, PBM_DONWLOAD), NULL, 20, cli.bottom-220, cli.right-190, 20, SWP_NOZORDER);
   SetWindowPos(GetDlgItem(hwd, TXT_DOWNSPEED), NULL, cli.right-160, cli.bottom-216, 60, 16, SWP_NOZORDER);
   SetWindowPos(GetDlgItem(hwd, BTN_CANCEL), NULL, cli.right-100, cli.bottom-220, 80, 22, SWP_NOZORDER);
@@ -461,7 +461,7 @@ BOOL CALLBACK GME_DlgRepXts(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
     SendMessage(hwndDlg, WM_SETICON, ICON_BIG, (LPARAM)g_hicnMain);
     g_hwndRepXts = hwndDlg;
     GME_DlgRepXtsInit();
-    if(GME_DialogFileOpen(g_hwndRepXts, tmp_spath, 260, &tmp_idummy, L"XML file (*.xml)\0*.XML;\0", L"Choose XML file")) {
+    if(GME_DialogFileOpen(g_hwndRepXts, tmp_spath, 260, &tmp_idummy, L"Файл XML (*.xml)\0*.XML;\0", L"Выберите файл XML")) {
       GME_RepoTestXml(tmp_spath, tmp_idummy);
     }
     GME_DlgRepXtsResize();
