@@ -19,4 +19,7 @@ $CXX -mwindows -s -static -o "$OUT/OvGME.exe" "$OUT"/obj/*.o \
 if command -v chmcmd >/dev/null 2>&1; then
   (cd help/ru && chmcmd ovgme.hhp >/dev/null) && cp help/ru/ovgme.chm "$OUT/ovgme.chm"
 fi
+if command -v makensis >/dev/null 2>&1 && [ -f "$OUT/ovgme.chm" ] && [ "$OUT" = bin ]; then
+  mkdir -p dist && (cd installer && makensis -V2 ovgme.nsi) && echo "OK: dist/OvGME_RU_1.7.4_setup.exe"
+fi
 echo "OK: $OUT/OvGME.exe"
